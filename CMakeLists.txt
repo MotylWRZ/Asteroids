@@ -1,5 +1,5 @@
 # Set a minimum CMake vversion
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.0.2)
 
 # Define our project name
 project(Asteroids)
@@ -7,13 +7,20 @@ project(Asteroids)
 # Look for the SFML components we're interested in
 find_package(SFML 2.4 COMPONENTS audio graphics window system REQUIRED)
 
+
 # Define a list of our source files
 include_directories(
 		${PROJECT_SOURCE_DIR}/Include
 		${PROJECT_SOURCE_DIR}/Source
 )
 
-file(GLOB_RECURSE _source_list *.cpp* *.h* *.hpp*)
+# Find all source files
+file(GLOB_RECURSE _source_list ${PROJECT_SOURCE_DIR} *.cpp* *.h* *.hpp*)
+
+# Exclude the Build folder from the list of source files
+list(FILTER _source_list EXCLUDE REGEX "${PROJECT_SOURCE_DIR}/Build/.*")
+
+# Structure the source groups
 foreach(_source IN ITEMS ${_source_list})
     get_filename_component(_source_path "${_source}" PATH)
     string(REPLACE "${CMAKE_SOURCE_DIR}" "" _group_path "${_source_path}")
