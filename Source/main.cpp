@@ -1,6 +1,9 @@
 #include <iostream>
 
+#include "Core/Application.h"
+
 int main()
 {
-	std::cin.get();
+	Application App = Application(1200, 540);
+	App.Run();
 }

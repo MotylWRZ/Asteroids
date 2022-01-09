@@ -1,9 +1,19 @@
+
+#include "Core/LevelBase.h"
+#include "Game/LevelMain.h"
+
 #include "Core/Application.h"
 
 Application::Application(unsigned int WindowWidth, unsigned int WindowHeight)
+	: m_WindowWidth(WindowWidth)
+	, m_WindowHeight(WindowHeight)
+	, m_RenderWindow(nullptr)
+	, m_IsRunning(false)
 {
 	this->m_RenderWindow = std::make_shared<sf::RenderWindow>();
-	this->m_RenderWindow->setSize(sf::Vector2u(WindowWidth, WindowHeight));
+	this->m_RenderWindow->create(sf::VideoMode(this->m_WindowWidth, this->m_WindowHeight), "Asteroids");
+	this->m_WindowWidth = WindowWidth;
+	this->m_WindowHeight = WindowHeight;
 }
 
 Application::~Application()
@@ -41,16 +51,34 @@ void Application::Run()
 void Application::Initialise()
 {
 	this->m_IsRunning = true;
+	this->m_GameLevel = std::make_shared<LevelMain>();
+	this->m_GameLevel->Initialize();
 }
 
 void Application::Update(float DeltaTime)
 {
+	if (this->m_GameLevel)
+	{
+		this->m_GameLevel->Update(DeltaTime);
+	}
 }
 
-void Application::HandleEvent(const sf::Event& pEvent)
+void Application::HandleEvent(const sf::Event& Event)
 {
+	if (this->m_GameLevel)
+	{
+		this->m_GameLevel->HandleEvent(Event);
+	}
 }
 
 void Application::Render()
 {
+	this->m_RenderWindow->clear();
+
+	if (this->m_GameLevel)
+	{
+		this->m_GameLevel->Render(*this->m_RenderWindow);
+	}
+
+	this->m_RenderWindow->display();
 }
