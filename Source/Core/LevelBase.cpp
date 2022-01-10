@@ -1,5 +1,7 @@
 #include "Core/GameObject.h"
 
+#include <iostream>
+
 #include "Core/LevelBase.h"
 
 LevelBase::LevelBase()
@@ -22,7 +24,28 @@ void LevelBase::Update(float DeltaTime)
 	}
 }
 
-void LevelBase::HandleEvent(sf::Event Event)
+void LevelBase::HandleEvent(const sf::Event& Event)
+{
+	sf::Event tEvent = Event;
+
+	switch (tEvent.type)
+	{
+	case sf::Event::KeyPressed:
+	{
+		this->HandleInput(tEvent.key.code, true);
+		break;
+	}
+	case sf::Event::KeyReleased:
+	{
+		this->HandleInput(tEvent.key.code, false);
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+void LevelBase::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
 {
 }
 

@@ -4,15 +4,16 @@
 
 #include "Core/GameObject.h"
 
-class PlayerSpaceship : public GameObject
+class PlayerSpaceShip : public GameObject
 {
 public:
-	PlayerSpaceship();
-	virtual ~PlayerSpaceship();
+	PlayerSpaceShip();
+	virtual ~PlayerSpaceShip();
 
 	virtual void Initialise() override;
 	virtual void Update(float DeltaTime) override;
 	virtual void Render(sf::RenderWindow& RenderWindow) override;
+	virtual void HandleInput(sf::Keyboard::Key Key, bool IsPressed);
 
 	std::shared_ptr<sf::CircleShape> m_CircleShape;
 };

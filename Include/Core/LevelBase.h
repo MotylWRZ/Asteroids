@@ -14,7 +14,8 @@ public:
 
 	virtual void Initialize();
 	virtual void Update(float DeltaTime);
-	virtual void HandleEvent(sf::Event Event);
+	virtual void HandleEvent(const sf::Event& Event);
+	virtual void HandleInput(sf::Keyboard::Key Key, bool IsPressed);
 	virtual void Render(sf::RenderWindow& RenderWindow);
 
 	void AddObject(std::shared_ptr<GameObject> Object);

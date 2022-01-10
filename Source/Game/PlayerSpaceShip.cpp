@@ -1,14 +1,17 @@
+
+#include <iostream>
+
 #include "Game/PlayerSpaceShip.h"
 
-PlayerSpaceship::PlayerSpaceship()
+PlayerSpaceShip::PlayerSpaceShip()
 {
 }
 
-PlayerSpaceship::~PlayerSpaceship()
+PlayerSpaceShip::~PlayerSpaceShip()
 {
 }
 
-void PlayerSpaceship::Initialise()
+void PlayerSpaceShip::Initialise()
 {
 	this->m_CircleShape = std::make_shared<sf::CircleShape>();
 	this->m_CircleShape->setRadius(200.0f);
@@ -16,11 +19,41 @@ void PlayerSpaceship::Initialise()
 	this->m_CircleShape->setPosition(sf::Vector2f(200.0f, 200.0f));
 }
 
-void PlayerSpaceship::Update(float DeltaTime)
+void PlayerSpaceShip::Update(float DeltaTime)
 {
 }
 
-void PlayerSpaceship::Render(sf::RenderWindow& RenderWindow)
+void PlayerSpaceShip::Render(sf::RenderWindow& RenderWindow)
 {
 	RenderWindow.draw(*this->m_CircleShape);
+}
+
+void PlayerSpaceShip::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
+{
+	if (!IsPressed)
+	{
+		return;
+	}
+
+	switch (Key)
+	{
+	case sf::Keyboard::Key::A:
+	{
+		break;
+	}
+	case sf::Keyboard::Key::D:
+	{
+		break;
+	}
+	case sf::Keyboard::Key::S:
+	{
+		break;
+	}
+	case sf::Keyboard::Key::W:
+	{
+		break;
+	}
+	default:
+		break;
+	}
 }
