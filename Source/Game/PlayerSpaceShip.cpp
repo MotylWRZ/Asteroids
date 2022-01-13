@@ -71,6 +71,8 @@ void PlayerSpaceShip::Render(sf::RenderWindow& RenderWindow)
 {
 	//RenderWindow.draw(*this->m_CircleShape);
 	RenderWindow.draw(&this->m_TransformedMesh[0], this->m_TransformedMesh.size(), sf::Triangles);
+
+	this->DrawDebug(RenderWindow);
 }
 
 void PlayerSpaceShip::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
@@ -118,4 +120,48 @@ void PlayerSpaceShip::RotateShip(float DeltaTime)
 		break;
 	}
 	}
+}
+
+void PlayerSpaceShip::DrawDebug(sf::RenderWindow& RenderWindow)
+{
+
+	auto Dot = [](const sf::Vector2f& VectorOne, const sf::Vector2f& VectorTwo)
+	{
+		return VectorOne.x * VectorTwo.x + VectorOne.y * VectorTwo.y;
+	};
+
+	auto Normalize = [Dot](const sf::Vector2f& Vector)
+	{
+		// Calculate a Velocity vector length
+		float tLength = std::sqrt(Dot(Vector, Vector));
+
+		if (tLength != 0)
+		{
+			return sf::Vector2f(Vector.x / tLength, Vector.y / tLength);
+		}
+		else
+		{
+			return Vector;
+		}
+	};
+
+	// Calculate a Velocity vector length
+	float tVelocityLength = std::sqrt(Dot(this->m_Velocity, this->m_Velocity));
+
+	// Cache locally a normalized velocity vector
+	sf::Vector2f tVelocityNormalized = Normalize(this->m_Velocity);
+
+	// Set the DebugLineStart to the current mesh position
+	sf::Vector2f tDebugLineStart = this->m_Position;
+
+	// Calculate the DebugLineEnd vector by adding to the current position noormalized velocity vector multiplied by velocity length
+	sf::Vector2f tDebugLineEnd = this->m_Position + (tVelocityNormalized * tVelocityLength);
+
+	// Construct a vector of vertices that will be used to draw a line
+	std::vector<sf::Vertex> tLinePoints;
+	tLinePoints.push_back(tDebugLineStart);
+	tLinePoints.push_back(tDebugLineEnd);
+
+	// Draw a line
+	RenderWindow.draw(&tLinePoints[0], tLinePoints.size(), sf::Lines);
 }

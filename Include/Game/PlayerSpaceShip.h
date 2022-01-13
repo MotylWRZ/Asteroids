@@ -24,6 +24,7 @@ public:
 
 private:
 	void RotateShip(float DeltaTime);
+	void DrawDebug(sf::RenderWindow& RenderWindow);
 
 private:
 	sf::Vector2f m_Position;
