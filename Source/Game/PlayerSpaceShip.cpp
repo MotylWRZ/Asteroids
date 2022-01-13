@@ -1,4 +1,6 @@
 
+#include "Core/Math/MathHelpers.h"
+
 #include <iostream>
 
 #include "Game/PlayerSpaceShip.h"
@@ -9,7 +11,7 @@ PlayerSpaceShip::PlayerSpaceShip()
 	,m_Velocity(sf::Vector2f(0.0f, 0.0f))
 	,m_ShipRotation(EShipRotation::Rotate_None)
 	,m_ThrustStrength(0.0f)
-	,m_LinearAcceleration(20.0f)
+	,m_LinearAcceleration(100.0f)
 	,m_AngularAcceleration(3.0f)
 {
 }
@@ -124,32 +126,11 @@ void PlayerSpaceShip::RotateShip(float DeltaTime)
 
 void PlayerSpaceShip::DrawDebug(sf::RenderWindow& RenderWindow)
 {
-
-	auto Dot = [](const sf::Vector2f& VectorOne, const sf::Vector2f& VectorTwo)
-	{
-		return VectorOne.x * VectorTwo.x + VectorOne.y * VectorTwo.y;
-	};
-
-	auto Normalize = [Dot](const sf::Vector2f& Vector)
-	{
-		// Calculate a Velocity vector length
-		float tLength = std::sqrt(Dot(Vector, Vector));
-
-		if (tLength != 0)
-		{
-			return sf::Vector2f(Vector.x / tLength, Vector.y / tLength);
-		}
-		else
-		{
-			return Vector;
-		}
-	};
-
 	// Calculate a Velocity vector length
-	float tVelocityLength = std::sqrt(Dot(this->m_Velocity, this->m_Velocity));
+	float tVelocityLength = MathHelpers::GetVectorLength(this->m_Velocity);
 
 	// Cache locally a normalized velocity vector
-	sf::Vector2f tVelocityNormalized = Normalize(this->m_Velocity);
+	sf::Vector2f tVelocityNormalized = MathHelpers::NormalizeVector(this->m_Velocity);
 
 	// Set the DebugLineStart to the current mesh position
 	sf::Vector2f tDebugLineStart = this->m_Position;
