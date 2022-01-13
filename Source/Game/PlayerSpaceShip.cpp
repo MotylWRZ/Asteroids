@@ -4,6 +4,13 @@
 #include "Game/PlayerSpaceShip.h"
 
 PlayerSpaceShip::PlayerSpaceShip()
+	:m_Angle(0.0f)
+	,m_Position(sf::Vector2f(100.0f, 100.0f))
+	,m_Velocity(sf::Vector2f(0.0f, 0.0f))
+	,m_ShipRotation(EShipRotation::Rotate_None)
+	,m_ThrustStrength(0.0f)
+	,m_LinearAcceleration(20.0f)
+	,m_AngularAcceleration(3.0f)
 {
 }
 
@@ -20,54 +27,95 @@ void PlayerSpaceShip::Initialise()
 	this->m_CircleShape->setOutlineThickness(10.0f);
 	this->m_CircleShape->setOutlineColor(sf::Color(250, 150, 100));
 
-	// define the position of the triangle's points
-	m_ShipMesh.push_back(sf::Vertex(sf::Vector2f(0.0f, 100.0f)));
-	m_ShipMesh.push_back(sf::Vertex(sf::Vector2f(50.0f, 0.0f)));
-	m_ShipMesh.push_back(sf::Vertex(sf::Vector2f(100.0f, 100.0f)));
+	// Define the position of the mesh points
+	m_ShipMesh.push_back(sf::Vertex(sf::Vector2f(0.0f, -100.0f)));
+	m_ShipMesh.push_back(sf::Vertex(sf::Vector2f(-50.0f, 50.0f)));
+	m_ShipMesh.push_back(sf::Vertex(sf::Vector2f(50.0f, 50.0f)));
 	
 
-	// define the color of the triangle's points
+	// Define the color of the mesh points
 	m_ShipMesh[0].color = sf::Color::Red;
-	m_ShipMesh[1].color = sf::Color::Blue;
-	m_ShipMesh[2].color = sf::Color::Green;
+	m_ShipMesh[1].color = sf::Color::Green;
+	m_ShipMesh[2].color = sf::Color::Blue;
 }
 
 void PlayerSpaceShip::Update(float DeltaTime)
 {
+	this->m_TransformedMesh = this->m_ShipMesh;
+
+	this->RotateShip(DeltaTime);
+
+	// Acceleration (ThrustStrength)  applied to velocity
+	this->m_Velocity.x += sin(this->m_Angle) * this->m_ThrustStrength * DeltaTime;
+	this->m_Velocity.y += -cos(this->m_Angle) * this->m_ThrustStrength * DeltaTime;
+
+	// Add velocity to the position
+	this->m_Position += this->m_Velocity * DeltaTime;
+
+	//Rotate
+	for (unsigned int i = 0; i < this->m_TransformedMesh.size(); i++)
+	{
+		this->m_TransformedMesh[i].position.x = this->m_ShipMesh[i].position.x * cosf(this->m_Angle) - this->m_ShipMesh[i].position.y * sinf(this->m_Angle);
+		this->m_TransformedMesh[i].position.y = this->m_ShipMesh[i].position.x * sinf(this->m_Angle) + this->m_ShipMesh[i].position.y * cosf(this->m_Angle);
+	}
+
+	// Translate
+	for (unsigned int i = 0; i < this->m_TransformedMesh.size(); i++)
+	{
+		this->m_TransformedMesh[i].position.x += this->m_Position.x;
+		this->m_TransformedMesh[i].position.y += this->m_Position.y;
+	}
 }
 
 void PlayerSpaceShip::Render(sf::RenderWindow& RenderWindow)
 {
 	//RenderWindow.draw(*this->m_CircleShape);
-	RenderWindow.draw(&this->m_ShipMesh[0], this->m_ShipMesh.size(), sf::Triangles);
+	RenderWindow.draw(&this->m_TransformedMesh[0], this->m_TransformedMesh.size(), sf::Triangles);
 }
 
 void PlayerSpaceShip::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
 {
-	if (!IsPressed)
-	{
-		return;
-	}
-
 	switch (Key)
 	{
-	case sf::Keyboard::Key::A:
+	case sf::Keyboard::Key::Up:
 	{
+		IsPressed ? this->m_ThrustStrength = this->m_LinearAcceleration : this->m_ThrustStrength = 0.0f;
+		
 		break;
 	}
-	case sf::Keyboard::Key::D:
+	case sf::Keyboard::Key::Left:
 	{
+		IsPressed ? this->m_ShipRotation = EShipRotation::Rotate_Left : this->m_ShipRotation = EShipRotation::Rotate_None;
 		break;
 	}
-	case sf::Keyboard::Key::S:
+	case sf::Keyboard::Key::Right:
 	{
-		break;
-	}
-	case sf::Keyboard::Key::W:
-	{
+		IsPressed ? this->m_ShipRotation = EShipRotation::Rotate_Right : this->m_ShipRotation = EShipRotation::Rotate_None;
 		break;
 	}
 	default:
+		this->m_ShipRotation = EShipRotation::Rotate_None;
 		break;
+	}
+}
+
+void PlayerSpaceShip::RotateShip(float DeltaTime)
+{
+	switch (this->m_ShipRotation)
+	{
+	case EShipRotation::Rotate_Left:
+	{
+		this->m_Angle -= this->m_AngularAcceleration * DeltaTime;
+		break;
+	}
+	case EShipRotation::Rotate_Right:
+	{
+		this->m_Angle += this->m_AngularAcceleration * DeltaTime;
+		break;
+	}
+	case EShipRotation::Rotate_None:
+	{
+		break;
+	}
 	}
 }

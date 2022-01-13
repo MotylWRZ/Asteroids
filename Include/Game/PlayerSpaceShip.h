@@ -4,6 +4,13 @@
 
 #include "Core/GameObject.h"
 
+enum class EShipRotation
+{
+	Rotate_Left,
+	Rotate_Right,
+	Rotate_None
+};
+
 class PlayerSpaceShip : public GameObject
 {
 public:
@@ -16,12 +23,22 @@ public:
 	virtual void HandleInput(sf::Keyboard::Key Key, bool IsPressed);
 
 private:
+	void RotateShip(float DeltaTime);
+
+private:
 	sf::Vector2f m_Position;
 	sf::Vector2f m_Velocity;
 	float m_Angle;
+	float m_ThrustStrength;
+
+	float m_LinearAcceleration;
+	float m_AngularAcceleration;
 
 	std::shared_ptr<sf::CircleShape> m_CircleShape;
 
 	std::vector<sf::Vertex> m_ShipMesh;
+	std::vector<sf::Vertex> m_TransformedMesh;
+
+	EShipRotation m_ShipRotation;
 	
 };
