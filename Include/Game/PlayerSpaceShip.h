@@ -35,5 +35,4 @@ private:
 
 	std::shared_ptr<sf::CircleShape> m_CircleShape;
 	EShipRotation m_ShipRotation;
-
 };

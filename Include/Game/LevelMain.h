@@ -10,7 +10,7 @@ class LevelMain :
     public LevelBase
 {
 public:
-    LevelMain();
+    LevelMain(sf::Vector2u WorldSize);
     virtual ~LevelMain();
 
     virtual void Initialize() override;
@@ -18,7 +18,11 @@ public:
     virtual void HandleInput(sf::Keyboard::Key Key, bool IsPressed) override;
     virtual void Render(sf::RenderWindow& RenderWindow) override;
 
+    void WrapObjectCoordinates(GameObject* Object);
+
 private:
     PlayerSpaceShip* m_PlayerSpaceShip;
+
+
 };
 

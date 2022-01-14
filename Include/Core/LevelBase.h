@@ -10,6 +10,7 @@ class LevelBase
 {
 public:
 	LevelBase();
+	LevelBase(sf::Vector2u WorldSize);
 	virtual ~LevelBase();
 
 	virtual void Initialize();
@@ -23,7 +24,8 @@ public:
 	const GameObject& GetObject(unsigned int Index) { return *this->m_GameObjects[Index]; }
 	std::vector<std::shared_ptr<GameObject>>& GetObjectsRef() { return this->m_GameObjects; }
 
-private:
+protected:
 	std::vector<std::shared_ptr<GameObject>> m_GameObjects;
+	sf::Vector2u m_WorldSize;
 };
 

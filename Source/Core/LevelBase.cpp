@@ -5,6 +5,12 @@
 #include "Core/LevelBase.h"
 
 LevelBase::LevelBase()
+	:m_WorldSize(sf::Vector2u(0, 0))
+{
+}
+
+LevelBase::LevelBase(sf::Vector2u WorldSize)
+	:m_WorldSize(WorldSize)
 {
 }
 
@@ -20,6 +26,11 @@ void LevelBase::Update(float DeltaTime)
 {
 	for (auto& tGameObject : this->m_GameObjects)
 	{
+		if (!tGameObject)
+		{
+			continue;
+		}
+
 		tGameObject->Update(DeltaTime);
 	}
 }
@@ -64,5 +75,5 @@ void LevelBase::AddObject(std::shared_ptr<GameObject> Object)
 
 void LevelBase::RemoveObject(std::shared_ptr<GameObject> Object)
 {
-	
+
 }

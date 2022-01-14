@@ -51,7 +51,8 @@ void Application::Run()
 void Application::Initialise()
 {
 	this->m_IsRunning = true;
-	this->m_GameLevel = std::make_shared<LevelMain>();
+	sf::Vector2u tWorldSize(this->m_WindowWidth, this->m_WindowHeight);
+	this->m_GameLevel = std::make_shared<LevelMain>(tWorldSize);
 	this->m_GameLevel->Initialize();
 }
 

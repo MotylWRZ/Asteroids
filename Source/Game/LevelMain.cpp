@@ -3,8 +3,11 @@
 
 #include "Game/LevelMain.h"
 
-LevelMain::LevelMain()
+LevelMain::LevelMain(sf::Vector2u WorldSize)
+	:LevelBase(WorldSize)
+	,m_PlayerSpaceShip(nullptr)
 {
+
 }
 
 LevelMain::~LevelMain()
@@ -25,7 +28,20 @@ void LevelMain::Initialize()
 
 void LevelMain::Update(float DeltaTime)
 {
-	LevelBase::Update(DeltaTime);
+	for (auto& tGameObject : this->GetObjectsRef())
+	{
+		if (!tGameObject)
+		{
+			continue;
+		}
+
+		tGameObject->Update(DeltaTime);
+
+		if (this->m_WorldSize.x != 0 && this->m_WorldSize.y != 0)
+		{
+			this->WrapObjectCoordinates(tGameObject.get());
+		}
+	}
 }
 
 void LevelMain::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
@@ -36,4 +52,31 @@ void LevelMain::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
 void LevelMain::Render(sf::RenderWindow& RenderWindow)
 {
 	LevelBase::Render(RenderWindow);
+}
+
+void LevelMain::WrapObjectCoordinates(GameObject* Object)
+{
+	sf::Vector2f tObjectPos = Object->GetPosition();
+
+	// Wrap the X coordinate
+	if (tObjectPos.x < 0.0f)
+	{
+		tObjectPos.x = this->m_WorldSize.x;
+	}
+	else if (tObjectPos.x > this->m_WorldSize.x)
+	{
+		tObjectPos.x = 0.0f;
+	}
+
+	// Wrap Y coordinate
+	if (tObjectPos.y < 0.0f)
+	{
+		tObjectPos.y = this->m_WorldSize.y;
+	}
+	else if (tObjectPos.y > this->m_WorldSize.y)
+	{
+		tObjectPos.y = 0.0f;
+	}
+
+	Object->SetPosition(tObjectPos);
 }
