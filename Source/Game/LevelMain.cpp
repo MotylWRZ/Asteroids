@@ -1,5 +1,6 @@
 
 #include "Game/PlayerSpaceShip.h"
+#include "Game/Asteroid.h"
 
 #include "Game/LevelMain.h"
 
@@ -18,12 +19,19 @@ void LevelMain::Initialize()
 {
 	LevelBase::Initialize();
 
-	std::shared_ptr<GameObject> PlayerShip = std::make_shared<PlayerSpaceShip>();
-	this->AddObject(PlayerShip);
+	// Create and Initialise PlayerSpaceShip
+	std::shared_ptr<GameObject> tPlayerShip = std::make_shared<PlayerSpaceShip>();
+	this->AddObject(tPlayerShip);
 
-	this->m_PlayerSpaceShip = static_cast<PlayerSpaceShip*>(PlayerShip.get());
+	this->m_PlayerSpaceShip = static_cast<PlayerSpaceShip*>(tPlayerShip.get());
 
-	PlayerShip->Initialise();
+	tPlayerShip->Initialise();
+
+	//Create and Initialise Asteroid
+	std::shared_ptr<GameObject> tAsteroid = std::make_shared<Asteroid>();
+	this->AddObject(tAsteroid);
+	tAsteroid->SetPosition(sf::Vector2f(300.0f, 400.0f));
+	tAsteroid->Initialise();
 }
 
 void LevelMain::Update(float DeltaTime)
