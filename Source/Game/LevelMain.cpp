@@ -30,7 +30,7 @@ void LevelMain::Initialize()
 	//Create and Initialise Asteroid
 	std::shared_ptr<GameObject> tAsteroid = std::make_shared<Asteroid>();
 	this->AddObject(tAsteroid);
-	tAsteroid->SetPosition(sf::Vector2f(300.0f, 400.0f));
+	tAsteroid->SetPosition(sf::Vector2f(100.0f, 100.0f));
 	tAsteroid->Initialise();
 }
 

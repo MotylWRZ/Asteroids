@@ -5,6 +5,7 @@
 GameObject::GameObject()
 	:m_Position(sf::Vector2f(100.0f, 100.0f))
 	,m_Angle(0.0f)
+	,m_MeshPrimitiveType(sf::PrimitiveType::LineStrip)
 {
 }
 
@@ -18,7 +19,6 @@ void GameObject::Initialise()
 
 void GameObject::Update(float DeltaTime)
 {
-
 	this->m_TransformedMesh = this->m_ObjectMesh;
 
 	//Rotate
@@ -38,5 +38,5 @@ void GameObject::Update(float DeltaTime)
 
 void GameObject::Render(sf::RenderWindow& Window)
 {
-	Window.draw(&this->m_TransformedMesh[0], this->m_TransformedMesh.size(), sf::Triangles);
+	Window.draw(&this->m_TransformedMesh[0], this->m_TransformedMesh.size(), this->m_MeshPrimitiveType);
 }

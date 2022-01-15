@@ -12,6 +12,7 @@ PlayerSpaceShip::PlayerSpaceShip()
 	,m_LinearAcceleration(100.0f)
 	,m_AngularAcceleration(3.0f)
 {
+	this->m_MeshPrimitiveType = sf::LineStrip;
 }
 
 PlayerSpaceShip::~PlayerSpaceShip()
@@ -23,7 +24,9 @@ void PlayerSpaceShip::Initialise()
 	// Define the position of the mesh points
 	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(0.0f, -100.0f)));
 	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(-50.0f, 50.0f)));
+	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(0.0f, 25.0f)));
 	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(50.0f, 50.0f)));
+	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(0.0f, -100.0f)));
 
 	// Define the color of the mesh points
 	this->m_ObjectMesh[0].color = sf::Color::Red;

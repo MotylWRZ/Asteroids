@@ -19,6 +19,7 @@ protected:
 	sf::Vector2f m_Position;
 	float m_Angle;
 	std::vector<sf::Vertex> m_ObjectMesh;
+	sf::PrimitiveType m_MeshPrimitiveType;
 
 private:
 	std::vector<sf::Vertex> m_TransformedMesh;

@@ -11,5 +11,9 @@ public:
     virtual void Initialise() override;
     virtual void Update(float DeltaTime) override;
     virtual void Render(sf::RenderWindow& RenderWindow) override;
+
+private:
+    float m_AsteroidShapeRadius;
+    int m_MeshVertNum;
 };
 
