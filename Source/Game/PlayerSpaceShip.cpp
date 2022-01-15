@@ -11,6 +11,7 @@ PlayerSpaceShip::PlayerSpaceShip()
 	,m_ThrustStrength(0.0f)
 	,m_LinearAcceleration(100.0f)
 	,m_AngularAcceleration(3.0f)
+	,m_MaxSpeed(100.0f)
 {
 	this->m_MeshPrimitiveType = sf::LineStrip;
 }
@@ -41,6 +42,12 @@ void PlayerSpaceShip::Update(float DeltaTime)
 	// Acceleration (ThrustStrength)  applied to velocity
 	this->m_Velocity.x += sin(this->m_Angle) * this->m_ThrustStrength * DeltaTime;
 	this->m_Velocity.y += -cos(this->m_Angle) * this->m_ThrustStrength * DeltaTime;
+
+	// Check if the current velocity length is greater than the maximum allowed speed
+	if (MathHelpers::GetVectorLength(this->m_Velocity) > this->m_MaxSpeed)
+	{
+		MathHelpers::SetVectorLength(&this->m_Velocity, this->m_MaxSpeed);
+	}
 
 	// Add velocity to the position
 	this->m_Position += this->m_Velocity * DeltaTime;

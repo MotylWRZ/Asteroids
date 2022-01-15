@@ -1,8 +1,14 @@
+#include "Core/Math/MathHelpers.h"
+
 #include "Game/Asteroid.h"
 
 Asteroid::Asteroid()
 	:m_AsteroidShapeRadius(100.0f)
 	,m_MeshVertNum(30)
+	,m_Velocity(sf::Vector2f(0.0f, 0.0f))
+	,m_LinearAcceleration(20.0f)
+	,m_AngularAcceleration(1.0f)
+	,m_MaxSpeed(20.0f)
 {
 	this->m_MeshPrimitiveType = sf::LineStrip;
 }
@@ -13,7 +19,7 @@ Asteroid::~Asteroid()
 
 void Asteroid::Initialise()
 {
-	const float PI = 3.14159f;
+	this->m_Angle = MathHelpers::GenerateRandomFloatInRange(-100.0f, 100.0f);
 
 	// Generate a list of vertices placed around the object position
 	for (unsigned int i = 0; i < this->m_MeshVertNum; i++)
@@ -29,6 +35,19 @@ void Asteroid::Initialise()
 
 void Asteroid::Update(float DeltaTime)
 {
+	// Acceleration (ThrustStrength)  applied to velocity
+	this->m_Velocity.x += sin(this->m_Angle) * this->m_LinearAcceleration * DeltaTime;
+	this->m_Velocity.y += -cos(this->m_Angle) * this->m_LinearAcceleration * DeltaTime;
+
+	// Check if the current velocity length is greater than the maximum allowed speed
+	if (MathHelpers::GetVectorLength(this->m_Velocity) > this->m_MaxSpeed)
+	{
+		MathHelpers::SetVectorLength(&this->m_Velocity, this->m_MaxSpeed);
+	}
+
+	// Add velocity to the position
+	this->m_Position += this->m_Velocity * DeltaTime;
+
 	GameObject::Update(DeltaTime);
 }
 

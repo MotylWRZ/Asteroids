@@ -27,11 +27,17 @@ void LevelMain::Initialize()
 
 	tPlayerShip->Initialise();
 
-	//Create and Initialise Asteroid
-	std::shared_ptr<GameObject> tAsteroid = std::make_shared<Asteroid>();
-	this->AddObject(tAsteroid);
-	tAsteroid->SetPosition(sf::Vector2f(100.0f, 100.0f));
-	tAsteroid->Initialise();
+	//Create and Initialise Asteroids
+	sf::Vector2f tAsteroidPos(100.0f, 100.0f);
+	for (unsigned i = 0; i < 3; i++)
+	{
+		std::shared_ptr<GameObject> tAsteroid = std::make_shared<Asteroid>();
+		this->AddObject(tAsteroid);
+		tAsteroid->SetPosition(tAsteroidPos);
+		tAsteroidPos.x += 200.0f;
+		tAsteroid->Initialise();
+	}
+
 }
 
 void LevelMain::Update(float DeltaTime)

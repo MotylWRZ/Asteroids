@@ -29,6 +29,7 @@ private:
 private:
 	sf::Vector2f m_Velocity;
 	float m_ThrustStrength;
+	float m_MaxSpeed;
 
 	float m_LinearAcceleration;
 	float m_AngularAcceleration;
