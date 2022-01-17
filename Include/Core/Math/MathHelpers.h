@@ -15,7 +15,5 @@ public:
 	inline static float GetVectorLength(const sf::Vector2f& SourceVector) { return std::sqrt(MathHelpers::Dot(SourceVector, SourceVector)); }
 	static void SetVectorLength(sf::Vector2f* Vector, float NewLength);
 	static float GenerateRandomFloatInRange(float Min, float Max);
-
-
 };
 

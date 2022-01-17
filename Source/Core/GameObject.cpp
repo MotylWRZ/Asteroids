@@ -1,5 +1,7 @@
 #include "SFML/Graphics.hpp"
 
+#include <iostream>
+
 #include "Core/GameObject.h"
 
 GameObject::GameObject()
@@ -38,5 +40,40 @@ void GameObject::Update(float DeltaTime)
 
 void GameObject::Render(sf::RenderWindow& Window)
 {
+	if (this->m_Shader)
+	{
+		Window.draw(&this->m_TransformedMesh[0], this->m_TransformedMesh.size(), this->m_MeshPrimitiveType, this->m_Shader.get());
+		return;
+	}
 	Window.draw(&this->m_TransformedMesh[0], this->m_TransformedMesh.size(), this->m_MeshPrimitiveType);
+}
+
+inline void GameObject::SetShader(const std::string& Filename, sf::Shader::Type ShaderType)
+{
+	if (!this->m_Shader)
+	{
+		this->m_Shader = std::make_unique<sf::Shader>();
+	}
+
+	if (!this->m_Shader->loadFromFile(Filename, ShaderType))
+	{
+		try
+		{
+			throw 0;
+		}
+		catch (...)
+		{
+			std::cout << "An exception occurred." << "Shader Filename incorrect" << '\n';
+		}
+	}
+}
+
+inline void GameObject::SetShader(const std::string& VertShaderFilename, const std::string& FragShaderFilename)
+{
+	if (!this->m_Shader)
+	{
+		this->m_Shader = std::make_unique<sf::Shader>();
+	}
+
+	this->m_Shader->loadFromFile(VertShaderFilename, FragShaderFilename);
 }
