@@ -4,7 +4,7 @@
 
 Asteroid::Asteroid()
 	:m_AsteroidShapeRadius(100.0f)
-	,m_MeshVertNum(30)
+	,m_MeshVertNum(20)
 	,m_Velocity(sf::Vector2f(0.0f, 0.0f))
 	,m_LinearAcceleration(20.0f)
 	,m_AngularAcceleration(1.0f)
@@ -26,11 +26,20 @@ void Asteroid::Initialise()
 	{
 		float tAngle = (static_cast<float>(i) / static_cast<float>(this->m_MeshVertNum)) * PI * 2;
 		sf::Vector2f  tVertexPos(this->m_AsteroidShapeRadius * sinf(tAngle), this->m_AsteroidShapeRadius * cosf(tAngle));
+
+		// Offset vertex position by random vector
+		sf::Vector2f tRandomPosOffset;
+		tRandomPosOffset.x = MathHelpers::GenerateRandomFloatInRange(-10.0f, 10.0f);
+		tRandomPosOffset.y = MathHelpers::GenerateRandomFloatInRange(-10.0f, 10.0f);
+		tVertexPos += tRandomPosOffset;
+
 		this->m_ObjectMesh.push_back(sf::Vertex(tVertexPos));
 	}
 
 	// Add the last vertex at the position of the first vertex added in order to connect the next to last vertex with the last one
 	this->m_ObjectMesh.push_back(sf::Vertex(this->m_ObjectMesh[0]));
+
+
 }
 
 void Asteroid::Update(float DeltaTime)

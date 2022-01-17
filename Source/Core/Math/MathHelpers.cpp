@@ -34,8 +34,8 @@ void MathHelpers::SetVectorLength(sf::Vector2f* Vector, float NewLength)
 
 float MathHelpers::GenerateRandomFloatInRange(float Min, float Max)
 {
-	static std::random_device tRandomDevice;
+	std::random_device tRandomDevice;
 	std::default_random_engine tRandEngine(tRandomDevice());
-	static std::uniform_real_distribution<> tRandomDistr(Min, Max);
+	std::uniform_real_distribution<> tRandomDistr(Min, Max);
 	return tRandomDistr(tRandEngine);
 }
