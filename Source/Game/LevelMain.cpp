@@ -22,10 +22,11 @@ void LevelMain::Initialize()
 	// Create and Initialise PlayerSpaceShip
 	std::shared_ptr<GameObject> tPlayerShip = std::make_shared<PlayerSpaceShip>();
 	this->AddObject(tPlayerShip);
-
 	this->m_PlayerSpaceShip = static_cast<PlayerSpaceShip*>(tPlayerShip.get());
 
+	tPlayerShip->SetPosition(sf::Vector2f(200.0f, 100.0f));
 	tPlayerShip->Initialise();
+
 
 	//Create and Initialise Asteroids
 	sf::Vector2f tAsteroidPos(300.0f, 300.0f);
