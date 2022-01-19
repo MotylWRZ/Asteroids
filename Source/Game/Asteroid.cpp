@@ -1,5 +1,7 @@
 #include "Core/Math/MathHelpers.h"
 
+#include <iostream>
+
 #include "Game/Asteroid.h"
 
 Asteroid::Asteroid()
@@ -39,7 +41,14 @@ void Asteroid::Initialise()
 	// Add the last vertex at the position of the first vertex added in order to connect the next to last vertex with the last one
 	this->m_ObjectMesh.push_back(sf::Vertex(this->m_ObjectMesh[0]));
 
-	this->SetShader("Assets/Shaders/BasicVertexShader.vert", sf::Shader::Vertex);
+	// Check if geometry shaders are supported
+	if (!sf::Shader::isGeometryAvailable())
+	{
+		std::cout << "Geometry Shaders are not supported." << std::endl;
+		return;
+	}
+
+	this->SetShader("Assets/Shaders/BasicVertexShader.vert", "Assets/Shaders/CoordWrappingShader.geom", "Assets/Shaders/BasicFragmentShader.frag");
 
 }
 

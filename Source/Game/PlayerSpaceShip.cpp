@@ -42,7 +42,7 @@ void PlayerSpaceShip::Initialise()
 		return;
 	}
 
-	this->SetShader("Assets/Shaders/BasicVertexShader.vert", "Assets/Shaders/DuplicationGeometryShader.geom", "Assets/Shaders/BasicFragmentShader.frag");
+	this->SetShader("Assets/Shaders/BasicVertexShader.vert", "Assets/Shaders/CoordWrappingShader.geom", "Assets/Shaders/BasicFragmentShader.frag");
 }
 
 void PlayerSpaceShip::Update(float DeltaTime)
@@ -70,7 +70,6 @@ void PlayerSpaceShip::Render(sf::RenderWindow& RenderWindow)
 	GameObject::Render(RenderWindow);
 
 	//RenderWindow.draw(*this->m_CircleShape, &this->GetShader());
-
 	this->DrawDebug(RenderWindow);
 }
 
