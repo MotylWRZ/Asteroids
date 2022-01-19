@@ -23,7 +23,7 @@ mat4 rotationZ( in float angle ) {
 void main()
 {
 	// Rotate vertex
-	gl_Vertex *= rotationZ(0.3);
+	//gl_Vertex *= rotationZ(0.3);
 
     // transform the vertex position
     gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;

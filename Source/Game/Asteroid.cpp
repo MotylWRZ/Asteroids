@@ -38,6 +38,9 @@ void Asteroid::Initialise()
 
 	// Add the last vertex at the position of the first vertex added in order to connect the next to last vertex with the last one
 	this->m_ObjectMesh.push_back(sf::Vertex(this->m_ObjectMesh[0]));
+
+	this->SetShader("Assets/Shaders/BasicVertexShader.vert", sf::Shader::Vertex);
+
 }
 
 void Asteroid::Update(float DeltaTime)

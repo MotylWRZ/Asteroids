@@ -45,6 +45,7 @@ void GameObject::Render(sf::RenderWindow& Window)
 		Window.draw(&this->m_TransformedMesh[0], this->m_TransformedMesh.size(), this->m_MeshPrimitiveType, this->m_Shader.get());
 		return;
 	}
+
 	Window.draw(&this->m_TransformedMesh[0], this->m_TransformedMesh.size(), this->m_MeshPrimitiveType);
 }
 
@@ -55,16 +56,17 @@ inline void GameObject::SetShader(const std::string& Filename, sf::Shader::Type 
 		this->m_Shader = std::make_unique<sf::Shader>();
 	}
 
-	if (!this->m_Shader->loadFromFile(Filename, ShaderType))
+	try
 	{
-		try
+		if (!this->m_Shader->loadFromFile(Filename, ShaderType))
 		{
-			throw 0;
+			throw 10;
 		}
-		catch (...)
-		{
-			std::cout << "An exception occurred." << "Shader Filename incorrect" << '\n';
-		}
+	}
+
+	catch (int x)
+	{
+		std::cout << "An exception occurred. Exception Number: " << x << " Shader Filename incorrect." << std::endl;
 	}
 }
 
@@ -75,5 +77,36 @@ inline void GameObject::SetShader(const std::string& VertShaderFilename, const s
 		this->m_Shader = std::make_unique<sf::Shader>();
 	}
 
-	this->m_Shader->loadFromFile(VertShaderFilename, FragShaderFilename);
+	try
+	{
+		if (this->m_Shader->loadFromFile(VertShaderFilename, FragShaderFilename))
+		{
+			throw 10;
+		}
+
+	}
+	catch (int x)
+	{
+		std::cout << "An exception occurred. Exception Number: " << x << " Shader Filename incorrect." << std::endl;
+	}
+}
+
+inline void GameObject::SetShader(const std::string& VertShaderFilename, const std::string& GeomShaderFilename, const std::string& FragShaderFilename)
+{
+	if (!this->m_Shader)
+	{
+		this->m_Shader = std::make_unique<sf::Shader>();
+	}
+
+	try {
+		if (!this->m_Shader->loadFromFile(VertShaderFilename, GeomShaderFilename, FragShaderFilename))
+		{
+			throw 10;
+		}
+	}
+
+	catch (int x)
+	{
+			std::cout << "An exception occurred. Exception Number: " << x << " Shader Filename incorrect." << std::endl;
+	}
 }

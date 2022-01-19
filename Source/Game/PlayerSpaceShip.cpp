@@ -33,6 +33,16 @@ void PlayerSpaceShip::Initialise()
 	this->m_ObjectMesh[0].color = sf::Color::Red;
 	this->m_ObjectMesh[1].color = sf::Color::Green;
 	this->m_ObjectMesh[2].color = sf::Color::Blue;
+
+
+	// Check if geometry shaders are supported
+	if (!sf::Shader::isGeometryAvailable())
+	{
+		std::cout << "Geometry Shaders are not supported." << std::endl;
+		return;
+	}
+
+	this->SetShader("Assets/Shaders/BasicVertexShader.vert", "Assets/Shaders/BasicGeometryShader.geom", "Assets/Shaders/BasicFragmentShader.frag");
 }
 
 void PlayerSpaceShip::Update(float DeltaTime)
@@ -58,6 +68,8 @@ void PlayerSpaceShip::Update(float DeltaTime)
 void PlayerSpaceShip::Render(sf::RenderWindow& RenderWindow)
 {
 	GameObject::Render(RenderWindow);
+
+	//RenderWindow.draw(*this->m_CircleShape, &this->GetShader());
 
 	this->DrawDebug(RenderWindow);
 }
