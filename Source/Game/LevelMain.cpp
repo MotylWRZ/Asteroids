@@ -1,6 +1,7 @@
 
 #include "Game/PlayerSpaceShip.h"
 #include "Game/Asteroid.h"
+#include "Game/Bullet.h"
 
 #include "Game/LevelMain.h"
 
@@ -24,8 +25,7 @@ void LevelMain::Initialize()
 	this->m_PlayerSpaceShip = static_cast<PlayerSpaceShip*>(tPlayerShip.get());
 
 	tPlayerShip->SetPosition(sf::Vector2f(200.0f, 100.0f));
-	tPlayerShip->Initialise();
-
+	tPlayerShip->Initialise(this);
 
 	//Create and Initialise Asteroids
 	sf::Vector2f tAsteroidPos(300.0f, 300.0f);
@@ -35,9 +35,8 @@ void LevelMain::Initialize()
 		this->AddObject(tAsteroid);
 		tAsteroid->SetPosition(tAsteroidPos);
 		tAsteroidPos.x += 200.0f;
-		tAsteroid->Initialise();
+		tAsteroid->Initialise(this);
 	}
-
 }
 
 void LevelMain::Update(float DeltaTime)

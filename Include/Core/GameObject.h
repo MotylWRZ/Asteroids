@@ -2,13 +2,15 @@
 
 #include "SFML/Graphics.hpp"
 
+class LevelBase;
+
 class GameObject
 {
 public:
 	GameObject();
 	virtual ~GameObject();
 
-	virtual void Initialise();
+	virtual void Initialise(LevelBase* Level);
 	virtual void Update(float DeltaTime);
 	virtual void Render(sf::RenderWindow& Window);
 
@@ -20,6 +22,7 @@ public:
 	inline virtual void SetShader(const std::string& VertShaderFilename, const std::string& GeomShaderFilename, const std::string& FragShaderFilename);
 
 	inline const sf::Shader& GetShader() { return *this->m_Shader.get(); }
+	inline bool IsActive() { return this->m_IsActive; }
 
 	inline void ResetShaders() { m_Shader.reset(); };
 
@@ -27,8 +30,9 @@ protected:
 	sf::Vector2f m_Position;
 	float m_Angle;
 	std::vector<sf::Vertex> m_ObjectMesh;
-
 	sf::PrimitiveType m_MeshPrimitiveType;
+	bool m_IsActive;
+	LevelBase* m_Level;
 
 private:
 	std::vector<sf::Vertex> m_TransformedMesh;

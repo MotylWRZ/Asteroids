@@ -24,15 +24,32 @@ void LevelBase::Initialize()
 
 void LevelBase::Update(float DeltaTime)
 {
-	for (auto& tGameObject : this->m_GameObjects)
+	for (unsigned int i = 0; i < this->m_GameObjects.size(); i++)
 	{
-		if (!tGameObject)
+		std::shared_ptr<GameObject> tGameObject = this->m_GameObjects[i];
+
+		if (!tGameObject || !tGameObject->IsActive())
 		{
+			this->m_ObjectsToClear.push_back(i);
 			continue;
 		}
 
 		tGameObject->Update(DeltaTime);
+
 	}
+
+	this->ClearInactiveObjects();
+
+	/*for (auto& tGameObject : this->m_GameObjects)
+	{
+		if (!tGameObject || !tGameObject->IsActive())
+		{
+			this->m_ObjectsToClear.push_back()
+			continue;
+		}
+
+		tGameObject->Update(DeltaTime);
+	}*/
 }
 
 void LevelBase::HandleEvent(const sf::Event& Event)
@@ -76,4 +93,14 @@ void LevelBase::AddObject(std::shared_ptr<GameObject> Object)
 void LevelBase::RemoveObject(std::shared_ptr<GameObject> Object)
 {
 
+}
+
+void LevelBase::ClearInactiveObjects()
+{
+	for (unsigned int tIndex : this->m_ObjectsToClear)
+	{
+		this->m_GameObjects.erase(this->m_GameObjects.begin() + tIndex);
+	}
+
+	this->m_ObjectsToClear.clear();
 }

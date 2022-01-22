@@ -19,8 +19,10 @@ Asteroid::~Asteroid()
 {
 }
 
-void Asteroid::Initialise()
+void Asteroid::Initialise(LevelBase* Level)
 {
+	GameObject::Initialise(Level);
+
 	this->m_Angle = MathHelpers::GenerateRandomFloatInRange(-100.0f, 100.0f);
 
 	// Generate a list of vertices placed around the object position

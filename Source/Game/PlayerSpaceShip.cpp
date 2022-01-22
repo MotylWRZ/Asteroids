@@ -20,8 +20,10 @@ PlayerSpaceShip::~PlayerSpaceShip()
 {
 }
 
-void PlayerSpaceShip::Initialise()
+void PlayerSpaceShip::Initialise(LevelBase* Level)
 {
+	GameObject::Initialise(Level);
+
 	// Define the position of the mesh points
 	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(0.0f, -100.0f)));
 	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(-50.0f, 50.0f)));
@@ -47,6 +49,11 @@ void PlayerSpaceShip::Initialise()
 
 void PlayerSpaceShip::Update(float DeltaTime)
 {
+	if (!this->IsActive())
+	{
+		return;
+	}
+
 	this->RotateShip(DeltaTime);
 
 	// Acceleration (ThrustStrength)  applied to velocity
@@ -75,6 +82,11 @@ void PlayerSpaceShip::Render(sf::RenderWindow& RenderWindow)
 
 void PlayerSpaceShip::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
 {
+	if (!this->IsActive())
+	{
+		return;
+	}
+
 	switch (Key)
 	{
 	case sf::Keyboard::Key::Up:

@@ -17,7 +17,7 @@ public:
 	PlayerSpaceShip();
 	virtual ~PlayerSpaceShip();
 
-	virtual void Initialise() override;
+	virtual void Initialise(LevelBase* Level) override;
 	virtual void Update(float DeltaTime) override;
 	virtual void Render(sf::RenderWindow& RenderWindow) override;
 	virtual void HandleInput(sf::Keyboard::Key Key, bool IsPressed);

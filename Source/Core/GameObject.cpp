@@ -2,12 +2,16 @@
 
 #include <iostream>
 
+#include "Core/LevelBase.h"
+
 #include "Core/GameObject.h"
 
 GameObject::GameObject()
 	:m_Position(sf::Vector2f(100.0f, 100.0f))
 	,m_Angle(0.0f)
 	,m_MeshPrimitiveType(sf::PrimitiveType::LineStrip)
+	, m_IsActive(false)
+	,m_Level(nullptr)
 {
 }
 
@@ -15,12 +19,25 @@ GameObject::~GameObject()
 {
 }
 
-void GameObject::Initialise()
+void GameObject::Initialise(LevelBase* Level)
 {
+	if (!Level)
+	{
+		std::cout << "Cannot initialise an object with an invalid level pointer." << std::endl;
+		return;
+	}
+
+	this->m_Level = Level;
+	this->m_IsActive = true;
 }
 
 void GameObject::Update(float DeltaTime)
 {
+	if (!this->m_IsActive)
+	{
+		return;
+	}
+
 	this->m_TransformedMesh = this->m_ObjectMesh;
 
 	//Rotate
@@ -40,6 +57,11 @@ void GameObject::Update(float DeltaTime)
 
 void GameObject::Render(sf::RenderWindow& Window)
 {
+	if (!this->m_IsActive)
+	{
+		return;
+	}
+
 	if (this->m_Shader)
 	{
 		Window.draw(&this->m_TransformedMesh[0], this->m_TransformedMesh.size(), this->m_MeshPrimitiveType, this->m_Shader.get());
