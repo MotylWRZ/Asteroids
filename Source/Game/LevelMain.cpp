@@ -8,7 +8,6 @@ LevelMain::LevelMain(sf::Vector2u WorldSize)
 	:LevelBase(WorldSize)
 	,m_PlayerSpaceShip(nullptr)
 {
-
 }
 
 LevelMain::~LevelMain()
