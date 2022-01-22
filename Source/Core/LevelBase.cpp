@@ -88,6 +88,7 @@ void LevelBase::Render(sf::RenderWindow& RenderWindow)
 void LevelBase::AddObject(std::shared_ptr<GameObject> Object)
 {
 	this->m_GameObjects.push_back(Object);
+	Object->Initialise(this);
 }
 
 void LevelBase::RemoveObject(std::shared_ptr<GameObject> Object)

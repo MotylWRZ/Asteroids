@@ -1,5 +1,6 @@
-
 #include "Core/Math/MathHelpers.h"
+#include "Core/LevelBase.h"
+#include "Game/Bullet.h"
 
 #include <iostream>
 
@@ -105,10 +106,27 @@ void PlayerSpaceShip::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
 		IsPressed ? this->m_ShipRotation = EShipRotation::Rotate_Right : this->m_ShipRotation = EShipRotation::Rotate_None;
 		break;
 	}
+	case sf::Keyboard::Key::Space:
+	{
+		this->Shoot();
+		break;
+	}
 	default:
 		this->m_ShipRotation = EShipRotation::Rotate_None;
 		break;
 	}
+}
+
+void PlayerSpaceShip::Shoot()
+{
+	if (!this->IsActive() || !this->m_Level)
+	{
+		return;
+	}
+
+	std::shared_ptr<Bullet> tBullet = std::make_shared <Bullet>();
+	this->m_Level->AddObject(tBullet);
+	tBullet->SetPosition(this->GetPosition());
 }
 
 void PlayerSpaceShip::RotateShip(float DeltaTime)

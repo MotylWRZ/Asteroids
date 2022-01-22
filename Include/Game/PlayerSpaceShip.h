@@ -22,6 +22,8 @@ public:
 	virtual void Render(sf::RenderWindow& RenderWindow) override;
 	virtual void HandleInput(sf::Keyboard::Key Key, bool IsPressed);
 
+	void Shoot();
+
 private:
 	void RotateShip(float DeltaTime);
 	void DrawDebug(sf::RenderWindow& RenderWindow);

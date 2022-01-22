@@ -23,6 +23,11 @@ void Asteroid::Initialise(LevelBase* Level)
 {
 	GameObject::Initialise(Level);
 
+	if (!this->IsActive())
+	{
+		return;
+	}
+
 	this->m_Angle = MathHelpers::GenerateRandomFloatInRange(-100.0f, 100.0f);
 
 	// Generate a list of vertices placed around the object position
@@ -51,7 +56,6 @@ void Asteroid::Initialise(LevelBase* Level)
 	}
 
 	this->SetShader("Assets/Shaders/BasicVertexShader.vert", "Assets/Shaders/CoordWrappingShader.geom", "Assets/Shaders/BasicFragmentShader.frag");
-
 }
 
 void Asteroid::Update(float DeltaTime)

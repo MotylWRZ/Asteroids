@@ -10,7 +10,7 @@ GameObject::GameObject()
 	:m_Position(sf::Vector2f(100.0f, 100.0f))
 	,m_Angle(0.0f)
 	,m_MeshPrimitiveType(sf::PrimitiveType::LineStrip)
-	, m_IsActive(false)
+	,m_IsActive(false)
 	,m_Level(nullptr)
 {
 }
@@ -21,6 +21,14 @@ GameObject::~GameObject()
 
 void GameObject::Initialise(LevelBase* Level)
 {
+	if (this->IsActive())
+	{
+		std::cout << "Object already has been initialised. The object has been reinitialised." << std::endl;
+		this->m_ObjectMesh.clear();
+		this->m_TransformedMesh.clear();
+		return;
+	}
+
 	if (!Level)
 	{
 		std::cout << "Cannot initialise an object with an invalid level pointer." << std::endl;
