@@ -28,6 +28,13 @@ void MathHelpers::SetVectorLength(sf::Vector2f* Vector, float NewLength)
 {
 	float tVectorLength = MathHelpers::GetVectorLength(*Vector);
 
+	if (tVectorLength == 0.0f)
+	{
+		Vector->x = Vector->x * NewLength;
+		Vector->y = Vector->y * NewLength;
+		return;
+	}
+
 	Vector->x = Vector->x * NewLength / tVectorLength;
 	Vector->y = Vector->y * NewLength / tVectorLength;
 }

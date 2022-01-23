@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Game/PlayerSpaceShip.h"
+
 #include "SFML/Graphics.hpp"
 
 #include "Core/LevelBase.h"
@@ -13,7 +15,7 @@ public:
     LevelMain(sf::Vector2u WorldSize);
     virtual ~LevelMain();
 
-    virtual void Initialize() override;
+    virtual void Initialise() override;
     virtual void Update(float DeltaTime) override;
     virtual void HandleInput(sf::Keyboard::Key Key, bool IsPressed) override;
     virtual void Render(sf::RenderWindow& RenderWindow) override;
@@ -21,7 +23,7 @@ public:
     void WrapObjectCoordinates(GameObject* Object);
 
 private:
-    PlayerSpaceShip* m_PlayerSpaceShip;
+    std::weak_ptr<PlayerSpaceShip> m_PlayerSpaceShip;
 
 
 };

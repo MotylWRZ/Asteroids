@@ -1,11 +1,12 @@
-#include "Game/PlayerSpaceShip.h"
+
+#include <memory>
+
 #include "Game/Asteroid.h"
 
 #include "Game/LevelMain.h"
 
 LevelMain::LevelMain(sf::Vector2u WorldSize)
 	:LevelBase(WorldSize)
-	,m_PlayerSpaceShip(nullptr)
 {
 }
 
@@ -13,14 +14,14 @@ LevelMain::~LevelMain()
 {
 }
 
-void LevelMain::Initialize()
+void LevelMain::Initialise()
 {
-	LevelBase::Initialize();
+	LevelBase::Initialise();
 
 	// Create and Initialise PlayerSpaceShip
 	std::shared_ptr<GameObject> tPlayerShip = std::make_shared<PlayerSpaceShip>();
 	this->AddObject(tPlayerShip);
-	this->m_PlayerSpaceShip = static_cast<PlayerSpaceShip*>(tPlayerShip.get());
+	this->m_PlayerSpaceShip = std::static_pointer_cast<PlayerSpaceShip>(tPlayerShip);
 
 	tPlayerShip->SetPosition(sf::Vector2f(200.0f, 100.0f));
 
@@ -37,10 +38,14 @@ void LevelMain::Initialize()
 
 void LevelMain::Update(float DeltaTime)
 {
-	for (auto& tGameObject : this->GetObjectsRef())
+
+	for (unsigned int i = 0; i < this->m_GameObjects.size(); i++)
 	{
-		if (!tGameObject)
+		std::shared_ptr<GameObject> tGameObject = this->m_GameObjects[i];
+
+		if (!tGameObject || !tGameObject->IsActive())
 		{
+			this->m_ObjectsToClear.push_back(i);
 			continue;
 		}
 
@@ -51,11 +56,16 @@ void LevelMain::Update(float DeltaTime)
 			this->WrapObjectCoordinates(tGameObject.get());
 		}
 	}
+
+	this->ClearInactiveObjects();
 }
 
 void LevelMain::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
 {
-	this->m_PlayerSpaceShip->HandleInput(Key, IsPressed);
+ 	if (!this->m_PlayerSpaceShip.expired())
+	{
+		m_PlayerSpaceShip.lock()->HandleInput(Key, IsPressed);
+	}
 }
 
 void LevelMain::Render(sf::RenderWindow& RenderWindow)

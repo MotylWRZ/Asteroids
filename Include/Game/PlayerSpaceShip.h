@@ -36,6 +36,9 @@ private:
 	float m_LinearAcceleration;
 	float m_AngularAcceleration;
 
+	float m_BulletDirAngleOffset;
+	sf::Vector2f m_BulletPositionOffset;
+
 	std::shared_ptr<sf::CircleShape> m_CircleShape;
 	EShipRotation m_ShipRotation;
 };

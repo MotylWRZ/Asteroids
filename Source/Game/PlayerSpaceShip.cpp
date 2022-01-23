@@ -8,11 +8,13 @@
 
 PlayerSpaceShip::PlayerSpaceShip()
 	:m_Velocity(sf::Vector2f(0.0f, 0.0f))
-	,m_ShipRotation(EShipRotation::Rotate_None)
-	,m_ThrustStrength(0.0f)
-	,m_LinearAcceleration(100.0f)
-	,m_AngularAcceleration(3.0f)
-	,m_MaxSpeed(100.0f)
+	, m_ShipRotation(EShipRotation::Rotate_None)
+	, m_ThrustStrength(0.0f)
+	, m_LinearAcceleration(100.0f)
+	, m_AngularAcceleration(3.0f)
+	, m_MaxSpeed(100.0f)
+	, m_BulletDirAngleOffset(-90.0f * PI / 180.0f)
+	, m_BulletPositionOffset(sf::Vector2f(0.0f, -100.0f))
 {
 	this->m_MeshPrimitiveType = sf::LineStrip;
 }
@@ -108,7 +110,7 @@ void PlayerSpaceShip::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
 	}
 	case sf::Keyboard::Key::Space:
 	{
-		this->Shoot();
+		!IsPressed ? this->Shoot() : 0;
 		break;
 	}
 	default:
@@ -126,7 +128,27 @@ void PlayerSpaceShip::Shoot()
 
 	std::shared_ptr<Bullet> tBullet = std::make_shared <Bullet>();
 	this->m_Level->AddObject(tBullet);
-	tBullet->SetPosition(this->GetPosition());
+
+	// Transform Bullet position offset using current player ship rotation angle
+	sf::Vector2f tOffsetTransformed = this->m_BulletPositionOffset;
+
+	tOffsetTransformed.x = this->m_BulletPositionOffset.x * cosf(this->m_Angle) - this->m_BulletPositionOffset.y * sinf(this->m_Angle);
+	tOffsetTransformed.y = this->m_BulletPositionOffset.x * sinf(this->m_Angle) + this->m_BulletPositionOffset.y * cosf(this->m_Angle);
+
+	// Calculate the initial bullet position by adding a transformed offset to the player ship position
+	sf::Vector2f tBulletPosition = this->m_Position + tOffsetTransformed;
+
+	tBullet->SetPosition(tBulletPosition);
+
+	// Create a vector to store a bullet direction
+	sf::Vector2f tBulletDir(0.0f, 0.0f);
+
+	// Calculate bullet direction
+	tBulletDir.x = cosf(this->m_Angle + this->m_BulletDirAngleOffset);
+	tBulletDir.y = sinf(this->m_Angle + this->m_BulletDirAngleOffset);
+
+	// Set a new bullet direction
+	tBullet->SetDirection(tBulletDir);
 }
 
 void PlayerSpaceShip::RotateShip(float DeltaTime)

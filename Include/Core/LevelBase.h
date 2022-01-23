@@ -13,7 +13,7 @@ public:
 	LevelBase(sf::Vector2u WorldSize);
 	virtual ~LevelBase();
 
-	virtual void Initialize();
+	virtual void Initialise();
 	virtual void Update(float DeltaTime);
 	virtual void HandleEvent(const sf::Event& Event);
 	virtual void HandleInput(sf::Keyboard::Key Key, bool IsPressed);
