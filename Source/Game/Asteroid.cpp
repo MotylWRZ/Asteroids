@@ -81,3 +81,7 @@ void Asteroid::Render(sf::RenderWindow& RenderWindow)
 {
 	GameObject::Render(RenderWindow);
 }
+
+void Asteroid::OnCollision(Collider2D* Collider)
+{
+}

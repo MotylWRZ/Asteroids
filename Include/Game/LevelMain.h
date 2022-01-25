@@ -25,6 +25,5 @@ public:
 private:
     std::weak_ptr<PlayerSpaceShip> m_PlayerSpaceShip;
 
-
 };
 

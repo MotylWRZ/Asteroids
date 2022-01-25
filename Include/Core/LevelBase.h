@@ -5,6 +5,9 @@
 #include "SFML/Graphics.hpp"
 
 #include <vector>
+#include <map>
+
+class Collider2D;
 
 class LevelBase
 {
@@ -28,6 +31,7 @@ public:
 protected:
 	std::vector<std::shared_ptr<GameObject>> m_GameObjects;
 	std::vector<unsigned int> m_ObjectsToClear;
+
 	sf::Vector2u m_WorldSize;
 };
 

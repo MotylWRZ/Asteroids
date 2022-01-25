@@ -15,6 +15,8 @@ public:
 	////////////////////////////////////////////////////////////
 	virtual bool CollidesWith(Collider2D* Collider) = 0;
 
+	bool Check() { return true; };
+
 	virtual bool CircleCircleCollision(const sf::Vector2f& CircleACenter, float CircleARadius
 									 , const sf::Vector2f& CircleBCenter, float CircleBRadius);
 };

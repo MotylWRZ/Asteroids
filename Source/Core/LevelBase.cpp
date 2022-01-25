@@ -1,5 +1,7 @@
 #include "Core/GameObject.h"
+#include "Core/Physics/Collider2D.h"
 
+#include <memory>
 #include <iostream>
 
 #include "Core/LevelBase.h"

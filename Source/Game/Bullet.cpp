@@ -34,3 +34,8 @@ void Bullet::Update(float DeltaTime)
 
 	this->m_Position += tVelocity * DeltaTime;
 }
+
+void Bullet::OnCollision(Collider2D* Collider)
+{
+	this->m_IsActive = false;
+}

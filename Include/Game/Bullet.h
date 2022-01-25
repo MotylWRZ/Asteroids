@@ -1,7 +1,10 @@
 #pragma once
+
+#include "Core/Physics/CircleCollider2D.h"
+
 #include "../Include/Core/GameObject.h"
 
-class Bullet : public GameObject
+class Bullet : public GameObject, public CircleCollider2D
 {
 public:
 
@@ -16,6 +19,8 @@ public:
 
 	inline float GetSpeed() { return this->m_Speed; }
 	inline const sf::Vector2f& GetDirection() const { return m_Direction; }
+
+	virtual void OnCollision(Collider2D* Collider) override;
 
 private:
 	unsigned int m_MeshVertNum;
