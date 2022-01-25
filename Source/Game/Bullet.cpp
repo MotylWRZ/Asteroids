@@ -1,5 +1,6 @@
 
 #include "Core/Math/MathHelpers.h"
+#include "Core/GeometryGenerator.h"
 
 #include "Game/Bullet.h"
 
@@ -19,17 +20,7 @@ void Bullet::Initialise(LevelBase* Level)
 {
 	GameObject::Initialise(Level);
 
-	// Generate a list of vertices placed around the object position
-	for (unsigned int i = 0; i < this->m_MeshVertNum; i++)
-	{
-		float tAngle = (static_cast<float>(i) / static_cast<float>(this->m_MeshVertNum)) * PI * 2;
-		sf::Vector2f  tVertexPos(this->m_BulletShapeRadius * sinf(tAngle), this->m_BulletShapeRadius * cosf(tAngle));
-
-		this->m_ObjectMesh.push_back(sf::Vertex(tVertexPos));
-	}
-
-	// Add the last vertex at the position of the first vertex added in order to connect the next to last vertex with the last one
-	this->m_ObjectMesh.push_back(sf::Vertex(this->m_ObjectMesh[0]));
+	this->m_ObjectMesh = GeometryGenerator::GenerateCircle(this->m_Position, this->m_BulletShapeRadius, this->m_MeshVertNum);
 }
 
 void Bullet::Update(float DeltaTime)
