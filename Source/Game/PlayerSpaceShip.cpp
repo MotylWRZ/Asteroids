@@ -48,6 +48,10 @@ void PlayerSpaceShip::Initialise(LevelBase* Level)
 	}
 
 	this->SetShader("Assets/Shaders/BasicVertexShader.vert", "Assets/Shaders/CoordWrappingShader.geom", "Assets/Shaders/BasicFragmentShader.frag");
+
+
+	this->SetRadius(50.0f);
+
 }
 
 void PlayerSpaceShip::Update(float DeltaTime)
@@ -56,6 +60,8 @@ void PlayerSpaceShip::Update(float DeltaTime)
 	{
 		return;
 	}
+
+	this->SetCenter(this->GetPosition());
 
 	this->RotateShip(DeltaTime);
 
@@ -151,6 +157,10 @@ void PlayerSpaceShip::Shoot()
 	tBullet->SetDirection(tBulletDir);
 }
 
+void PlayerSpaceShip::OnCollision(Collider2D* Collider)
+{
+}
+
 void PlayerSpaceShip::RotateShip(float DeltaTime)
 {
 	switch (this->m_ShipRotation)
@@ -193,4 +203,23 @@ void PlayerSpaceShip::DrawDebug(sf::RenderWindow& RenderWindow)
 
 	// Draw a line
 	RenderWindow.draw(&tLinePoints[0], tLinePoints.size(), sf::Lines);
+
+
+	std::vector<sf::Vertex> tCollisionGeometry;
+
+	// Generate a list of vertices placed around the object position
+	for (unsigned int i = 0; i < 20; i++)
+	{
+		float tAngle = (static_cast<float>(i) / static_cast<float>(20)) * PI * 2;
+		sf::Vector2f  tVertexPos(this->GetRadius() * sinf(tAngle), this->GetRadius() * cosf(tAngle));
+		tVertexPos += this->GetCenter();
+
+		tCollisionGeometry.push_back(sf::Vertex(tVertexPos));
+	}
+
+	// Add the last vertex at the position of the first vertex added in order to connect the next to last vertex with the last one
+	tCollisionGeometry.push_back(sf::Vertex(tCollisionGeometry[0]));
+
+	RenderWindow.draw(&tCollisionGeometry[0], tCollisionGeometry.size(), sf::LinesStrip);
+
 }

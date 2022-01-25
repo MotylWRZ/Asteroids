@@ -2,6 +2,8 @@
 
 #include "SFML/Graphics.hpp"
 
+#include "Core/Physics/CircleCollider2D.h"
+
 #include "Core/GameObject.h"
 
 enum class EShipRotation
@@ -11,7 +13,7 @@ enum class EShipRotation
 	Rotate_None
 };
 
-class PlayerSpaceShip : public GameObject
+class PlayerSpaceShip : public GameObject, public CircleCollider2D
 {
 public:
 	PlayerSpaceShip();
@@ -23,6 +25,8 @@ public:
 	virtual void HandleInput(sf::Keyboard::Key Key, bool IsPressed);
 
 	void Shoot();
+
+	virtual void OnCollision(Collider2D* Collider);
 
 private:
 	void RotateShip(float DeltaTime);
