@@ -50,7 +50,7 @@ void PlayerSpaceShip::Initialise(LevelBase* Level)
 	this->SetShader("Assets/Shaders/BasicVertexShader.vert", "Assets/Shaders/CoordWrappingShader.geom", "Assets/Shaders/BasicFragmentShader.frag");
 
 
-	this->SetRadius(50.0f);
+	this->SetColliderRadius(50.0f);
 
 }
 
@@ -61,7 +61,7 @@ void PlayerSpaceShip::Update(float DeltaTime)
 		return;
 	}
 
-	this->SetCenter(this->GetPosition());
+	this->SetColliderCenter(this->GetPosition());
 
 	this->RotateShip(DeltaTime);
 
@@ -211,8 +211,8 @@ void PlayerSpaceShip::DrawDebug(sf::RenderWindow& RenderWindow)
 	for (unsigned int i = 0; i < 20; i++)
 	{
 		float tAngle = (static_cast<float>(i) / static_cast<float>(20)) * PI * 2;
-		sf::Vector2f  tVertexPos(this->GetRadius() * sinf(tAngle), this->GetRadius() * cosf(tAngle));
-		tVertexPos += this->GetCenter();
+		sf::Vector2f  tVertexPos(this->GetColliderRadius() * sinf(tAngle), this->GetColliderRadius() * cosf(tAngle));
+		tVertexPos += this->GetColliderCenter();
 
 		tCollisionGeometry.push_back(sf::Vertex(tVertexPos));
 	}

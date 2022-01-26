@@ -58,8 +58,8 @@ void Asteroid::Initialise(LevelBase* Level)
 		return;
 	}
 
-	this->SetCenter(this->GetPosition());
-	this->SetRadius(100.0f);
+	this->SetColliderCenter(this->GetPosition());
+	this->SetColliderRadius(100.0f);
 
 	this->SetShader("Assets/Shaders/BasicVertexShader.vert", "Assets/Shaders/CoordWrappingShader.geom", "Assets/Shaders/BasicFragmentShader.frag");
 }
@@ -79,7 +79,7 @@ void Asteroid::Update(float DeltaTime)
 	// Add velocity to the position
 	this->m_Position += this->m_Velocity * DeltaTime;
 
-	this->SetCenter(this->GetPosition());
+	this->SetColliderCenter(this->GetPosition());
 
 	GameObject::Update(DeltaTime);
 }
@@ -88,7 +88,7 @@ void Asteroid::Render(sf::RenderWindow& RenderWindow)
 {
 	GameObject::Render(RenderWindow);
 
-	std::vector<sf::Vertex> tCircleCollision = GeometryGenerator::GenerateCircle(this->GetCenter(), this->GetRadius(), 20);
+	std::vector<sf::Vertex> tCircleCollision = GeometryGenerator::GenerateCircle(this->GetColliderCenter(), this->GetColliderRadius(), 20);
 
 	RenderWindow.draw(&tCircleCollision[0], tCircleCollision.size(), sf::LineStrip);
 

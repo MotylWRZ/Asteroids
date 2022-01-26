@@ -23,8 +23,8 @@ void Bullet::Initialise(LevelBase* Level)
 
 	this->m_ObjectMesh = GeometryGenerator::GenerateCircle(sf::Vector2f(0.0f, 0.0f), this->m_BulletShapeRadius, this->m_MeshVertNum);
 
-	this->SetCenter(this->GetPosition());
-	this->SetRadius(20.0f);
+	this->SetColliderCenter(this->GetPosition());
+	this->SetColliderRadius(20.0f);
 
 }
 
@@ -39,7 +39,7 @@ void Bullet::Update(float DeltaTime)
 
 	this->m_Position += tVelocity * DeltaTime;
 
-	this->SetCenter(this->GetPosition());
+	this->SetColliderCenter(this->GetPosition());
 }
 
 void Bullet::OnCollision(Collider2D* Collider)

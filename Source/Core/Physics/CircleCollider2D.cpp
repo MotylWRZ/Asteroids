@@ -29,5 +29,5 @@ bool CircleCollider2D::CollidesWith(CircleCollider2D* CircleCollider)
 		return false;
 	}
 
-	return this->CircleCircleCollision(this->m_Center, this->m_Radius, CircleCollider->GetCenter(), CircleCollider->GetRadius());
+	return this->CircleCircleCollision(this->m_Center, this->m_Radius, CircleCollider->GetColliderCenter(), CircleCollider->GetColliderRadius());
 }

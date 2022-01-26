@@ -12,11 +12,11 @@ public:
 
 	virtual bool CollidesWith(CircleCollider2D* CircleCollider) override;
 
-	inline void SetCenter(const sf::Vector2f& Center) { this->m_Center = Center; }
-	inline void SetRadius(float Radius) { this->m_Radius = Radius; }
+	inline void SetColliderCenter(const sf::Vector2f& Center) { this->m_Center = Center; }
+	inline void SetColliderRadius(float Radius) { this->m_Radius = Radius; }
 
-	inline const sf::Vector2f& GetCenter() const { return this->m_Center; }
-	inline float GetRadius() { return this->m_Radius; }
+	inline const sf::Vector2f& GetColliderCenter() const { return this->m_Center; }
+	inline float GetColliderRadius() { return this->m_Radius; }
 
 private:
 	sf::Vector2f m_Center;
