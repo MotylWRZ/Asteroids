@@ -100,6 +100,8 @@ void LevelBase::AddObject(std::shared_ptr<GameObject> Object)
 {
 	// Add a new game object to the objects list
 	this->m_GameObjects.push_back(Object);
+
+	// Initialise the object
 	Object->Initialise(this);
 
 	// Check if the object is also a collider
@@ -138,8 +140,11 @@ void LevelBase::ClearInactiveObjects()
 			this->m_Colliders.erase(this->m_GameObjects[tIndex].get());
 		}
 
+		// Free the memory occupied by this game object
 		this->m_GameObjects[tIndex].reset();
 		this->m_GameObjects[tIndex] = nullptr;
+
+		// Remove a nulll shared ptr from the game objects list
 		this->m_GameObjects.erase(this->m_GameObjects.begin() + tIndex);
 	}
 
