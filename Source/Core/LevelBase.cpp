@@ -98,9 +98,11 @@ void LevelBase::UpdateObjectCollision(GameObject* Object)
 
 void LevelBase::AddObject(std::shared_ptr<GameObject> Object)
 {
+	// Add a new game object to the objects list
 	this->m_GameObjects.push_back(Object);
 	Object->Initialise(this);
 
+	// Check if the object is also a collider
 	std::weak_ptr<Collider2D> tCollider = std::dynamic_pointer_cast<Collider2D>(Object);
 
 	if (tCollider.expired())
@@ -108,6 +110,7 @@ void LevelBase::AddObject(std::shared_ptr<GameObject> Object)
 		return;
 	}
 
+	// If the object is also a colider, add it to colliders map
 	std::pair<const GameObject*, std::weak_ptr<Collider2D>> tMapElem(Object.get(), tCollider);
 	this->m_Colliders.insert(tMapElem);
 }
