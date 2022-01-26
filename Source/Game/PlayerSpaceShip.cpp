@@ -50,8 +50,7 @@ void PlayerSpaceShip::Initialise(LevelBase* Level)
 	this->SetShader("Assets/Shaders/BasicVertexShader.vert", "Assets/Shaders/CoordWrappingShader.geom", "Assets/Shaders/BasicFragmentShader.frag");
 
 
-	this->SetColliderRadius(50.0f);
-
+	this->SetColliderRadius(47.0f);
 }
 
 void PlayerSpaceShip::Update(float DeltaTime)
@@ -221,5 +220,4 @@ void PlayerSpaceShip::DrawDebug(sf::RenderWindow& RenderWindow)
 	tCollisionGeometry.push_back(sf::Vertex(tCollisionGeometry[0]));
 
 	RenderWindow.draw(&tCollisionGeometry[0], tCollisionGeometry.size(), sf::LinesStrip);
-
 }
