@@ -75,6 +75,27 @@ void LevelBase::Render(sf::RenderWindow& RenderWindow)
 	}
 }
 
+void LevelBase::UpdateObjectCollision(GameObject* Object)
+{
+	// Try to find if this game object is a collider
+	auto tColliderPtr = this->m_Colliders.find(Object)->second.lock();
+	Collider2D* tCollider = tColliderPtr.get();
+
+	if (tCollider)
+	{
+		for (auto& tOtherCollider : this->m_Colliders)
+		{
+			if (tCollider == tOtherCollider.second.lock().get());
+			{
+				if (tCollider->CollidesWith(tOtherCollider.second.lock().get()))
+				{
+					tCollider->OnCollision(tOtherCollider.second.lock().get());
+				}
+			}
+		}
+	}
+}
+
 void LevelBase::AddObject(std::shared_ptr<GameObject> Object)
 {
 	this->m_GameObjects.push_back(Object);
@@ -105,6 +126,15 @@ void LevelBase::ClearInactiveObjects()
 
 	for (unsigned int tIndex : this->m_ObjectsToClear)
 	{
+
+		// Delete a collider pointer if this game object is a collider
+		auto tCollider = this->m_Colliders.find(this->m_GameObjects[tIndex].get())->second;
+
+		if (!tCollider.expired())
+		{
+			this->m_Colliders.erase(this->m_GameObjects[tIndex].get());
+		}
+
 		this->m_GameObjects[tIndex].reset();
 		this->m_GameObjects[tIndex] = nullptr;
 		this->m_GameObjects.erase(this->m_GameObjects.begin() + tIndex);

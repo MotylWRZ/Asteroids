@@ -1,6 +1,6 @@
 #include "Core/Math/MathHelpers.h"
 #include "Core/GeometryGenerator.h"
-#include "Game/PlayerSpaceShip.h"
+#include "Game/Bullet.h"
 
 #include <iostream>
 
@@ -96,9 +96,9 @@ void Asteroid::Render(sf::RenderWindow& RenderWindow)
 
 void Asteroid::OnCollision(Collider2D* Collider)
 {
-	PlayerSpaceShip* tPlayer = dynamic_cast<PlayerSpaceShip*>(Collider);
+	Bullet* tBullet = dynamic_cast<Bullet*>(Collider);
 
-	if (!tPlayer)
+	if (!tBullet)
 	{
 		return;
 	}

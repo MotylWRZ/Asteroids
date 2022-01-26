@@ -49,22 +49,7 @@ void LevelMain::Update(float DeltaTime)
 
 		tGameObject->Update(DeltaTime);
 
-		// Try to find if this game object is a collider
-		auto& tCollider = this->m_Colliders.find(tGameObject.get())->second;
-
-		if (!tCollider.expired())
-		{
-			for (auto& tOtherCollider : this->m_Colliders)
-			{
-				if (tCollider.lock().get() == tOtherCollider.second.lock().get());
-				{
-					if (tCollider.lock().get()->CollidesWith(tOtherCollider.second.lock().get()))
-					{
-						tCollider.lock().get()->OnCollision(tOtherCollider.second.lock().get());
-					}
-				}
-			}
-		}
+		this->UpdateObjectCollision(tGameObject.get());
 
 		if (this->m_WorldSize.x != 0 && this->m_WorldSize.y != 0)
 		{

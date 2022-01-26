@@ -22,6 +22,8 @@ public:
 	virtual void HandleInput(sf::Keyboard::Key Key, bool IsPressed);
 	virtual void Render(sf::RenderWindow& RenderWindow);
 
+	virtual void UpdateObjectCollision(GameObject* Object);
+
 	void AddObject(std::shared_ptr<GameObject> Object);
 	void RemoveObject(std::shared_ptr<GameObject> Object);
 	void ClearInactiveObjects();

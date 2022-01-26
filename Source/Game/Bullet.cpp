@@ -1,6 +1,7 @@
 
 #include "Core/Math/MathHelpers.h"
 #include "Core/GeometryGenerator.h"
+#include "Game/Asteroid.h"
 
 #include "Game/Bullet.h"
 
@@ -21,6 +22,10 @@ void Bullet::Initialise(LevelBase* Level)
 	GameObject::Initialise(Level);
 
 	this->m_ObjectMesh = GeometryGenerator::GenerateCircle(sf::Vector2f(0.0f, 0.0f), this->m_BulletShapeRadius, this->m_MeshVertNum);
+
+	this->SetCenter(this->GetPosition());
+	this->SetRadius(20.0f);
+
 }
 
 void Bullet::Update(float DeltaTime)
@@ -33,9 +38,18 @@ void Bullet::Update(float DeltaTime)
 	MathHelpers::SetVectorLength(&tVelocity, this->m_Speed);
 
 	this->m_Position += tVelocity * DeltaTime;
+
+	this->SetCenter(this->GetPosition());
 }
 
 void Bullet::OnCollision(Collider2D* Collider)
 {
+	Asteroid* tAsteroid = dynamic_cast<Asteroid*>(Collider);
+
+	if (!tAsteroid)
+	{
+		return;
+	}
+
 	this->m_IsActive = false;
 }
