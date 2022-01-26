@@ -14,11 +14,6 @@ CircleCollider2D::~CircleCollider2D()
 
 bool CircleCollider2D::CollidesWith(Collider2D* Collider)
 {
-	if (!Collider)
-	{
-		return false;
-	}
-
 	return Collider->CollidesWith(this);
 }
 

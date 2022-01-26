@@ -8,9 +8,9 @@ public:
 	virtual ~CircleCollider2D();
 
 	virtual bool CollidesWith(Collider2D* Collider) override;
-	virtual void OnCollision(Collider2D* Collider) override = 0;
+	virtual void OnCollision(Collider2D* Collider) override {};// = 0;
 
-	bool CollidesWith(CircleCollider2D* CircleCollider);
+	virtual bool CollidesWith(CircleCollider2D* CircleCollider) override;
 
 	inline void SetCenter(const sf::Vector2f& Center) { this->m_Center = Center; }
 	inline void SetRadius(float Radius) { this->m_Radius = Radius; }

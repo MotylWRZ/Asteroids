@@ -32,6 +32,8 @@ protected:
 	std::vector<std::shared_ptr<GameObject>> m_GameObjects;
 	std::vector<unsigned int> m_ObjectsToClear;
 
+	std::map<const GameObject*, std::weak_ptr<Collider2D>> m_Colliders;
+
 	sf::Vector2u m_WorldSize;
 };
 

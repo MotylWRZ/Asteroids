@@ -2,6 +2,9 @@
 
 #include "SFML/Graphics.hpp"
 
+//Forward Declarations
+class CircleCollider2D;
+
 class Collider2D
 {
 public:
@@ -14,6 +17,7 @@ public:
 	// Functions to be implemented by derived collision classes
 	////////////////////////////////////////////////////////////
 	virtual bool CollidesWith(Collider2D* Collider) = 0;
+	virtual bool CollidesWith(CircleCollider2D* CircleCollider) = 0;
 
 	bool Check() { return true; };
 

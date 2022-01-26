@@ -37,7 +37,6 @@ void LevelMain::Initialise()
 
 void LevelMain::Update(float DeltaTime)
 {
-
 	for (unsigned int i = 0; i < this->m_GameObjects.size(); i++)
 	{
 		std::shared_ptr<GameObject> tGameObject = this->m_GameObjects[i];
