@@ -17,6 +17,9 @@ public:
 	inline virtual const sf::Vector2f& GetPosition() const { return this->m_Position; }
 
 	inline virtual void SetPosition(sf::Vector2f NewPosition) { this->m_Position = NewPosition; }
+	inline virtual void SetAngle(float Angle) { this->m_Angle = Angle; }
+	inline virtual void SetScale(float Scale) { this->m_Scale = Scale; }
+	virtual void ApplyTranform();
 	inline virtual void SetShader(const std::string& Filename, sf::Shader::Type ShaderType);
 	inline virtual void SetShader(const std::string& VertShaderFilename, const std::string& FragShaderFilename);
 	inline virtual void SetShader(const std::string& VertShaderFilename, const std::string& GeomShaderFilename, const std::string& FragShaderFilename);
@@ -29,6 +32,7 @@ public:
 protected:
 	sf::Vector2f m_Position;
 	float m_Angle;
+	float m_Scale;
 	std::vector<sf::Vertex> m_ObjectMesh;
 	sf::PrimitiveType m_MeshPrimitiveType;
 	bool m_IsActive;

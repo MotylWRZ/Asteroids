@@ -63,7 +63,7 @@ void Asteroid::Initialise(LevelBase* Level)
 	}
 
 	this->SetColliderCenter(this->GetPosition());
-	this->SetColliderRadius(this->m_AsteroidShapeRadius);
+	this->SetColliderRadius(this->m_AsteroidShapeRadius * this->m_Scale);
 
 	this->SetShader("Assets/Shaders/BasicVertexShader.vert", "Assets/Shaders/CoordWrappingShader.geom", "Assets/Shaders/BasicFragmentShader.frag");
 }
@@ -111,8 +111,9 @@ void Asteroid::OnCollision(Collider2D* Collider)
 	{
 		for (unsigned int i = 0; i < this->m_ChunksNum; i++)
 		{
-			std::shared_ptr<GameObject> tAsteroid = std::make_shared<Asteroid>(this->m_AsteroidShapeRadius * 0.5f);
+			std::shared_ptr<GameObject> tAsteroid = std::make_shared<Asteroid>();
 			tAsteroid->SetPosition(this->GetPosition());
+			tAsteroid->SetScale(0.5f);
 
 			this->m_Level->AddObject(tAsteroid);
 		}

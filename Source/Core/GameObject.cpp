@@ -12,6 +12,7 @@ GameObject::GameObject()
 	,m_MeshPrimitiveType(sf::PrimitiveType::LineStrip)
 	,m_IsActive(false)
 	,m_Level(nullptr)
+	,m_Scale(1.0f)
 {
 }
 
@@ -35,6 +36,8 @@ void GameObject::Initialise(LevelBase* Level)
 		return;
 	}
 
+	this->ApplyTranform();
+
 	this->m_Level = Level;
 	this->m_IsActive = true;
 }
@@ -46,21 +49,7 @@ void GameObject::Update(float DeltaTime)
 		return;
 	}
 
-	this->m_TransformedMesh = this->m_ObjectMesh;
-
-	//Rotate
-	for (unsigned int i = 0; i < this->m_TransformedMesh.size(); i++)
-	{
-		this->m_TransformedMesh[i].position.x = this->m_ObjectMesh[i].position.x * cosf(this->m_Angle) - this->m_ObjectMesh[i].position.y * sinf(this->m_Angle);
-		this->m_TransformedMesh[i].position.y = this->m_ObjectMesh[i].position.x * sinf(this->m_Angle) + this->m_ObjectMesh[i].position.y * cosf(this->m_Angle);
-	}
-
-	// Translate
-	for (unsigned int i = 0; i < this->m_TransformedMesh.size(); i++)
-	{
-		this->m_TransformedMesh[i].position.x += this->m_Position.x;
-		this->m_TransformedMesh[i].position.y += this->m_Position.y;
-	}
+	this->ApplyTranform();
 }
 
 void GameObject::Render(sf::RenderWindow& Window)
@@ -77,6 +66,33 @@ void GameObject::Render(sf::RenderWindow& Window)
 	}
 
 	Window.draw(&this->m_TransformedMesh[0], this->m_TransformedMesh.size(), this->m_MeshPrimitiveType);
+}
+
+void GameObject::ApplyTranform()
+{
+	this->m_TransformedMesh = this->m_ObjectMesh;
+
+	//Rotate
+	for (unsigned int i = 0; i < this->m_TransformedMesh.size(); i++)
+	{
+		this->m_TransformedMesh[i].position.x = this->m_ObjectMesh[i].position.x * cosf(this->m_Angle) - this->m_ObjectMesh[i].position.y * sinf(this->m_Angle);
+		this->m_TransformedMesh[i].position.y = this->m_ObjectMesh[i].position.x * sinf(this->m_Angle) + this->m_ObjectMesh[i].position.y * cosf(this->m_Angle);
+	}
+
+	// Scale
+
+	for (unsigned int i = 0; i < this->m_TransformedMesh.size(); i++)
+	{
+		this->m_TransformedMesh[i].position.x *= this->m_Scale;
+		this->m_TransformedMesh[i].position.y *= this->m_Scale;
+	}
+
+	// Translate
+	for (unsigned int i = 0; i < this->m_TransformedMesh.size(); i++)
+	{
+		this->m_TransformedMesh[i].position.x += this->m_Position.x;
+		this->m_TransformedMesh[i].position.y += this->m_Position.y;
+	}
 }
 
 inline void GameObject::SetShader(const std::string& Filename, sf::Shader::Type ShaderType)
