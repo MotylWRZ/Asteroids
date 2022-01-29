@@ -4,7 +4,7 @@
 
 int main()
 {
-	Application App = Application(1200, 540);
+		Application App = Application(1200, 540);
 
-	App.Run();
+		App.Run();
 }

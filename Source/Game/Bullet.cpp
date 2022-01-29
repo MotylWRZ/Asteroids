@@ -24,7 +24,7 @@ void Bullet::Initialise(LevelBase* Level)
 	this->m_ObjectMesh = GeometryGenerator::GenerateCircle(sf::Vector2f(0.0f, 0.0f), this->m_BulletShapeRadius, this->m_MeshVertNum);
 
 	this->SetColliderCenter(this->GetPosition());
-	this->SetColliderRadius(3.0f);
+	this->SetColliderRadius(this->m_BulletShapeRadius);
 
 }
 

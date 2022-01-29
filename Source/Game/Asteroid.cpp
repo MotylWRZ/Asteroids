@@ -1,18 +1,22 @@
 #include "Core/Math/MathHelpers.h"
 #include "Core/GeometryGenerator.h"
 #include "Game/Bullet.h"
+#include "Core/LevelBase.h"
 
 #include <iostream>
 
 #include "Game/Asteroid.h"
 
-Asteroid::Asteroid()
-	:m_AsteroidShapeRadius(100.0f)
-	,m_MeshVertNum(20)
+Asteroid::Asteroid(float Size, float DeformationScale, int VerticesNum)
+	:m_AsteroidShapeRadius(Size)
+	,m_MeshVertNum(VerticesNum)
 	,m_Velocity(sf::Vector2f(0.0f, 0.0f))
 	,m_LinearAcceleration(20.0f)
 	,m_AngularAcceleration(1.0f)
 	,m_MaxSpeed(20.0f)
+	,m_DeformationScale(DeformationScale)
+	,m_CanMultiply(false)
+	,m_ChunksNum(2)
 {
 	this->m_MeshPrimitiveType = sf::LineStrip;
 }
@@ -59,7 +63,7 @@ void Asteroid::Initialise(LevelBase* Level)
 	}
 
 	this->SetColliderCenter(this->GetPosition());
-	this->SetColliderRadius(100.0f);
+	this->SetColliderRadius(this->m_AsteroidShapeRadius);
 
 	this->SetShader("Assets/Shaders/BasicVertexShader.vert", "Assets/Shaders/CoordWrappingShader.geom", "Assets/Shaders/BasicFragmentShader.frag");
 }
@@ -103,5 +107,34 @@ void Asteroid::OnCollision(Collider2D* Collider)
 		return;
 	}
 
+	if (this->m_CanMultiply)
+	{
+		for (unsigned int i = 0; i < this->m_ChunksNum; i++)
+		{
+			std::shared_ptr<GameObject> tAsteroid = std::make_shared<Asteroid>(this->m_AsteroidShapeRadius * 0.5f);
+			tAsteroid->SetPosition(this->GetPosition());
+
+			this->m_Level->AddObject(tAsteroid);
+		}
+	}
+
 	this->m_IsActive = false;
+}
+
+void Asteroid::SetSize(float Size, float DeformationScale, int VerticesNum)
+{
+	this->m_AsteroidShapeRadius = Size;
+	this->m_DeformationScale = DeformationScale;
+	this->m_MeshVertNum = VerticesNum;
+
+	if (this->m_ObjectMesh.size() != 0)
+	{
+		this->Initialise(this->m_Level);
+	}
+}
+
+void Asteroid::SetCanMultiply(bool CanMultiply, unsigned int ChunksNum)
+{
+	this->m_CanMultiply = CanMultiply;
+	this->m_ChunksNum = ChunksNum;
 }

@@ -32,6 +32,7 @@ void LevelMain::Initialise()
 		this->AddObject(tAsteroid);
 		tAsteroid->SetPosition(tAsteroidPos);
 		tAsteroidPos.x += 200.0f;
+		dynamic_cast<Asteroid*>(tAsteroid.get())->SetCanMultiply(true, 2);
 	}
 }
 
