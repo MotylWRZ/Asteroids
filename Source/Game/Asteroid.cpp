@@ -27,7 +27,7 @@ Asteroid::~Asteroid()
 
 void Asteroid::Initialise(LevelBase* Level)
 {
-	GameObject::Initialise(Level);
+	AsteroidsGameObject::Initialise(Level);
 
 	if (!this->IsActive())
 	{
@@ -85,12 +85,12 @@ void Asteroid::Update(float DeltaTime)
 
 	this->SetColliderCenter(this->GetPosition());
 
-	GameObject::Update(DeltaTime);
+	AsteroidsGameObject::Update(DeltaTime);
 }
 
 void Asteroid::Render(sf::RenderWindow& RenderWindow)
 {
-	GameObject::Render(RenderWindow);
+	AsteroidsGameObject::Render(RenderWindow);
 
 	std::vector<sf::Vertex> tCircleCollision = GeometryGenerator::GenerateCircle(this->GetColliderCenter(), this->GetColliderRadius(), 20);
 

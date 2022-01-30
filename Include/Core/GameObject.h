@@ -37,9 +37,9 @@ protected:
 	sf::PrimitiveType m_MeshPrimitiveType;
 	bool m_IsActive;
 	LevelBase* m_Level;
-
+	std::unique_ptr<sf::Shader> m_Shader;
 private:
 	std::vector<sf::Vertex> m_TransformedMesh;
-	std::unique_ptr<sf::Shader> m_Shader;
+
 };
 

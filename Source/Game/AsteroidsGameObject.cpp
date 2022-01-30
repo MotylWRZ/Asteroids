@@ -15,6 +15,8 @@ void AsteroidsGameObject::Update(float DeltaTime)
 	GameObject::Update(DeltaTime);
 
 	this->WrapObjectCoordinates();
+
+	this->SetColliderCenter(this->GetPosition());
 }
 
 void AsteroidsGameObject::WrapObjectCoordinates()

@@ -20,7 +20,7 @@ Bullet::~Bullet()
 
 void Bullet::Initialise(LevelBase* Level)
 {
-	GameObject::Initialise(Level);
+	AsteroidsGameObject::Initialise(Level);
 
 	this->m_ObjectMesh = GeometryGenerator::GenerateCircle(sf::Vector2f(0.0f, 0.0f), this->m_BulletShapeRadius, this->m_MeshVertNum);
 

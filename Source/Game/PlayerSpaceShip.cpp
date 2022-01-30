@@ -25,7 +25,7 @@ PlayerSpaceShip::~PlayerSpaceShip()
 
 void PlayerSpaceShip::Initialise(LevelBase* Level)
 {
-	GameObject::Initialise(Level);
+	AsteroidsGameObject::Initialise(Level);
 
 	// Define the position of the mesh points
 	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(0.0f, -100.0f)));
@@ -47,8 +47,8 @@ void PlayerSpaceShip::Initialise(LevelBase* Level)
 		return;
 	}
 
+	//this->SetShader("Assets/Shaders/BasicVertexShader.vert", "Assets/Shaders/CoordWrappingShader.geom", "Assets/Shaders/BasicFragmentShader.frag");
 	this->SetShader("Assets/Shaders/BasicVertexShader.vert", "Assets/Shaders/CoordWrappingShader.geom", "Assets/Shaders/BasicFragmentShader.frag");
-
 
 	this->SetColliderRadius(47.0f * this->m_Scale);
 }
@@ -77,12 +77,12 @@ void PlayerSpaceShip::Update(float DeltaTime)
 	// Add velocity to the position
 	this->m_Position += this->m_Velocity * DeltaTime;
 
-	GameObject::Update(DeltaTime);
+	AsteroidsGameObject::Update(DeltaTime);
 }
 
 void PlayerSpaceShip::Render(sf::RenderWindow& RenderWindow)
 {
-	GameObject::Render(RenderWindow);
+	AsteroidsGameObject::Render(RenderWindow);
 
 	//RenderWindow.draw(*this->m_CircleShape, &this->GetShader());
 	this->DrawDebug(RenderWindow);
