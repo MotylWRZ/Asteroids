@@ -2,9 +2,9 @@
 
 #include "Core/Physics/CircleCollider2D.h"
 
-#include "../Include/Core/GameObject.h"
+#include "Game/AsteroidsGameObject.h"
 
-class Bullet : public GameObject, public CircleCollider2D
+class Bullet : public AsteroidsGameObject
 {
 public:
 

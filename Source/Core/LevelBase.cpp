@@ -37,6 +37,8 @@ void LevelBase::Update(float DeltaTime)
 		}
 
 		tGameObject->Update(DeltaTime);
+
+		this->UpdateObjectCollision(tGameObject.get());
 	}
 
 	this->ClearInactiveObjects();

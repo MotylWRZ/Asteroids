@@ -1,6 +1,7 @@
 
 #include "Core/Math/MathHelpers.h"
 #include "Core/GeometryGenerator.h"
+#include "Core/LevelBase.h"
 #include "Game/Asteroid.h"
 
 #include "Game/Bullet.h"
@@ -30,7 +31,17 @@ void Bullet::Initialise(LevelBase* Level)
 
 void Bullet::Update(float DeltaTime)
 {
-	GameObject::Update(DeltaTime);
+	sf::Vector2f tPosition = this->GetPosition();
+	sf::Vector2f tWorldSize = static_cast<sf::Vector2f>(this->m_Level->GetWorldSize());
+
+	// Destroy the Bullet if it's out of the screen bounds
+	if (tPosition.x > this->m_Level->GetWorldSize().x || tPosition.x < 0.0f
+		|| tPosition.y > this->m_Level->GetWorldSize().y || tPosition.y < 0.0f)
+	{
+		this->m_IsActive = false;
+	}
+
+	AsteroidsGameObject::Update(DeltaTime);
 
 	sf::Vector2f tVelocity(0.0f, 0.0f);
 	tVelocity =  this->m_Direction;

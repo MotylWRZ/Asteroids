@@ -20,8 +20,6 @@ public:
     virtual void HandleInput(sf::Keyboard::Key Key, bool IsPressed) override;
     virtual void Render(sf::RenderWindow& RenderWindow) override;
 
-    void WrapObjectCoordinates(GameObject* Object);
-
 private:
     std::weak_ptr<PlayerSpaceShip> m_PlayerSpaceShip;
 

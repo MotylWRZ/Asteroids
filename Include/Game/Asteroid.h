@@ -2,9 +2,9 @@
 
 #include "Core/Physics/CircleCollider2D.h"
 
-#include "Core/GameObject.h"
+#include "Game/AsteroidsGameObject.h"
 
-class Asteroid : public GameObject, public CircleCollider2D
+class Asteroid : public AsteroidsGameObject
 {
 public:
     Asteroid(float Size = 100.0f, float DeformationScale = 10.0f, int verticesNum = 20);

@@ -4,7 +4,7 @@
 
 #include "Core/Physics/CircleCollider2D.h"
 
-#include "Core/GameObject.h"
+#include "Game/AsteroidsGameObject.h"
 
 enum class EShipRotation
 {
@@ -13,7 +13,7 @@ enum class EShipRotation
 	Rotate_None
 };
 
-class PlayerSpaceShip : public GameObject, public CircleCollider2D
+class PlayerSpaceShip : public AsteroidsGameObject
 {
 public:
 	PlayerSpaceShip();

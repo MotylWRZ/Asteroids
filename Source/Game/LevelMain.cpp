@@ -38,27 +38,7 @@ void LevelMain::Initialise()
 
 void LevelMain::Update(float DeltaTime)
 {
-	for (unsigned int i = 0; i < this->m_GameObjects.size(); i++)
-	{
-		std::shared_ptr<GameObject> tGameObject = this->m_GameObjects[i];
-
-		if (!tGameObject || !tGameObject->IsActive())
-		{
-			this->m_ObjectsToClear.push_back(i);
-			continue;
-		}
-
-		tGameObject->Update(DeltaTime);
-
-		this->UpdateObjectCollision(tGameObject.get());
-
-		if (this->m_WorldSize.x != 0 && this->m_WorldSize.y != 0)
-		{
-			this->WrapObjectCoordinates(tGameObject.get());
-		}
-	}
-
-	this->ClearInactiveObjects();
+	LevelBase::Update(DeltaTime);
 }
 
 void LevelMain::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
@@ -72,31 +52,4 @@ void LevelMain::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
 void LevelMain::Render(sf::RenderWindow& RenderWindow)
 {
 	LevelBase::Render(RenderWindow);
-}
-
-void LevelMain::WrapObjectCoordinates(GameObject* Object)
-{
-	sf::Vector2f tObjectPos = Object->GetPosition();
-
-	// Wrap the X coordinate
-	if (tObjectPos.x < 0.0f)
-	{
-		tObjectPos.x = this->m_WorldSize.x;
-	}
-	else if (tObjectPos.x > this->m_WorldSize.x)
-	{
-		tObjectPos.x = 0.0f;
-	}
-
-	// Wrap Y coordinate
-	if (tObjectPos.y < 0.0f)
-	{
-		tObjectPos.y = this->m_WorldSize.y;
-	}
-	else if (tObjectPos.y > this->m_WorldSize.y)
-	{
-		tObjectPos.y = 0.0f;
-	}
-
-	Object->SetPosition(tObjectPos);
 }
