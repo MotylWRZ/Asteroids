@@ -26,7 +26,7 @@ void LevelMain::Initialise()
 
 	//Create and Initialise Asteroids
 	sf::Vector2f tAsteroidPos(300.0f, 300.0f);
-	for (unsigned i = 0; i < 3; i++)
+	for (unsigned i = 0; i < 10; i++)
 	{
 		std::shared_ptr<GameObject> tAsteroid = std::make_shared<Asteroid>();
 		this->AddObject(tAsteroid);
