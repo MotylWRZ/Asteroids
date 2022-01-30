@@ -7,7 +7,7 @@
 class Asteroid : public AsteroidsGameObject
 {
 public:
-    Asteroid(float Size = 100.0f, float DeformationScale = 10.0f, int verticesNum = 20);
+    Asteroid(float Size = 70.0f, float DeformationScale = 10.0f, int verticesNum = 20);
     virtual ~Asteroid();
 
     virtual void Initialise(LevelBase* Level) override;

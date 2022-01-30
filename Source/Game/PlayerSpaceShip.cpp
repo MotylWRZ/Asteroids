@@ -15,6 +15,7 @@ PlayerSpaceShip::PlayerSpaceShip()
 	, m_MaxSpeed(100.0f)
 	, m_BulletDirAngleOffset(-90.0f * PI / 180.0f)
 	, m_BulletPositionOffset(sf::Vector2f(0.0f, -100.0f))
+	, m_Size(70.0f)
 {
 	this->m_MeshPrimitiveType = sf::LineStrip;
 }
@@ -28,11 +29,11 @@ void PlayerSpaceShip::Initialise(LevelBase* Level)
 	AsteroidsGameObject::Initialise(Level);
 
 	// Define the position of the mesh points
-	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(0.0f, -100.0f)));
-	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(-50.0f, 50.0f)));
-	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(0.0f, 25.0f)));
-	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(50.0f, 50.0f)));
-	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(0.0f, -100.0f)));
+	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(0.0f, -this->m_Size)));
+	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(-this->m_Size / 2.0f, this->m_Size / 2.0f)));
+	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(0.0f, this->m_Size / 4.0f)));
+	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(this->m_Size / 2.0f, this->m_Size / 2.0f)));
+	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(0.0f, -this->m_Size)));
 
 	// Define the color of the mesh points
 	this->m_ObjectMesh[0].color = sf::Color::Red;
