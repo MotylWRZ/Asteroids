@@ -48,3 +48,13 @@ float MathHelpers::GenerateRandomFloatInRange(float Min, float Max)
 
 	return tRandomDistr(tRandEngine);
 }
+
+int MathHelpers::GenerateRandomIntegerInRange(int Min, int Max)
+{
+	static std::random_device tRandomDevice;
+	std::default_random_engine tRandEngine(tRandomDevice());
+	std::uniform_int_distribution<> tRandomDistr(Min, Max);
+	tRandomDistr.reset();
+
+	return tRandomDistr(tRandEngine);
+}

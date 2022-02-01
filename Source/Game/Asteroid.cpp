@@ -12,11 +12,12 @@ Asteroid::Asteroid(float Size, float DeformationScale, int VerticesNum)
 	,m_MeshVertNum(VerticesNum)
 	,m_Velocity(sf::Vector2f(0.0f, 0.0f))
 	,m_LinearAcceleration(200.0f)
-	,m_AngularAcceleration(10.0f)
+	,m_AngularAcceleration(1.0f)
 	,m_MaxSpeed(200.0f)
 	,m_DeformationScale(DeformationScale)
 	,m_CanMultiply(false)
 	,m_ChunksNum(2)
+	, m_AngularMovementDirection(1)
 {
 	this->m_MeshPrimitiveType = sf::LinesStrip;
 }
@@ -35,6 +36,7 @@ void Asteroid::Initialise(LevelBase* Level)
 	}
 
 	this->m_Angle = MathHelpers::GenerateRandomFloatInRange(-100.0f, 100.0f);
+	this->m_MovementAngle = this->m_Angle;
 
 	// Generate a list of vertices placed around the object position
 	for (unsigned int i = 0; i < this->m_MeshVertNum; i++)
@@ -65,14 +67,25 @@ void Asteroid::Initialise(LevelBase* Level)
 	this->SetColliderCenter(this->GetPosition());
 	this->SetColliderRadius(this->m_AsteroidShapeRadius * this->m_Scale);
 
+	// Set a random angular movement direction
+	this->m_AngularMovementDirection = MathHelpers::GenerateRandomIntegerInRange(0, 1);
+
+	if (this->m_AngularMovementDirection == 0)
+	{
+		this->m_AngularMovementDirection = -1;
+	}
+
 	this->SetShader("Assets/Shaders/BasicVertexShader.vert", "Assets/Shaders/CoordWrappingShader.geom", "Assets/Shaders/BasicFragmentShader.frag");
 }
 
 void Asteroid::Update(float DeltaTime)
 {
-	// Acceleration (ThrustStrength)  applied to velocity
-	this->m_Velocity.x += sin(this->m_Angle) * this->m_LinearAcceleration * DeltaTime;
-	this->m_Velocity.y += -cos(this->m_Angle) * this->m_LinearAcceleration * DeltaTime;
+	// Apply angular acceleration to the current object angle
+	this->m_Angle += this->m_AngularAcceleration * this->m_AngularMovementDirection * DeltaTime;
+
+	// Acceleration applied to velocity
+	this->m_Velocity.x += sin(this->m_MovementAngle) * this->m_LinearAcceleration * DeltaTime;
+	this->m_Velocity.y += -cos(this->m_MovementAngle) * this->m_LinearAcceleration * DeltaTime;
 
 	// Check if the current velocity length is greater than the maximum allowed speed
 	if (MathHelpers::GetVectorLength(this->m_Velocity) > this->m_MaxSpeed)
