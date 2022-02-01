@@ -22,17 +22,17 @@ void LevelMain::Initialise()
 	std::shared_ptr<GameObject> tPlayerShip = std::make_shared<PlayerSpaceShip>();
 	this->AddObject(tPlayerShip);
 	this->m_PlayerSpaceShip = std::static_pointer_cast<PlayerSpaceShip>(tPlayerShip);
-	tPlayerShip->SetPosition(sf::Vector2f(200.0f, 100.0f));
+	tPlayerShip->SetPosition(sf::Vector2f(this->m_WorldSize.x / 2, this->m_WorldSize.y / 2));
 
 	//Create and Initialise Asteroids
-	sf::Vector2f tAsteroidPos(300.0f, 300.0f);
+	sf::Vector2f tAsteroidPos(0.0f, 0.0f);
 	for (unsigned i = 0; i < 10; i++)
 	{
-		std::shared_ptr<GameObject> tAsteroid = std::make_shared<Asteroid>();
+		std::shared_ptr<GameObject> tAsteroid = std::make_shared<Asteroid>(47.0f);
 		this->AddObject(tAsteroid);
 		tAsteroid->SetPosition(tAsteroidPos);
 		tAsteroidPos.x += 200.0f;
-		dynamic_cast<Asteroid*>(tAsteroid.get())->SetCanMultiply(true, 2);
+		dynamic_cast<Asteroid*>(tAsteroid.get())->SetCanMultiply(true, 4);
 	}
 }
 

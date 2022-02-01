@@ -15,7 +15,7 @@ PlayerSpaceShip::PlayerSpaceShip()
 	, m_MaxSpeed(100.0f)
 	, m_BulletDirAngleOffset(-90.0f * PI / 180.0f)
 	, m_BulletPositionOffset(sf::Vector2f(0.0f, -100.0f))
-	, m_Size(70.0f)
+	, m_Size(47.0f)
 {
 	this->m_MeshPrimitiveType = sf::LinesStrip;
 }
@@ -39,11 +39,6 @@ void PlayerSpaceShip::Initialise(LevelBase* Level)
 	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(0.0f, this->m_Size / 4.0f)));
 	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(this->m_Size / 2.0f, this->m_Size / 2.0f)));
 	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(0.0f, -this->m_Size)));
-
-	// Define the color of the mesh points
-	this->m_ObjectMesh[0].color = sf::Color::Red;
-	this->m_ObjectMesh[1].color = sf::Color::Green;
-	this->m_ObjectMesh[2].color = sf::Color::Blue;
 
 	// Check if geometry shaders are supported
 	if (!sf::Shader::isGeometryAvailable())

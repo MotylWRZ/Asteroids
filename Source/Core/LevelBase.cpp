@@ -133,9 +133,13 @@ void LevelBase::ClearInactiveObjects()
 
 	for (unsigned int tIndex : this->m_ObjectsToClear)
 	{
+		if (tIndex > this->m_GameObjects.size() - 1)
+		{
+			continue;
+		}
 
 		// Delete a collider pointer if this game object is a collider
-		auto& tCollider = this->m_Colliders.find(this->m_GameObjects[tIndex].get())->second;
+		auto tCollider = this->m_Colliders.find(this->m_GameObjects[tIndex].get())->second;
 
 		if (!tCollider.expired())
 		{
