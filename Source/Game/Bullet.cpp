@@ -38,7 +38,7 @@ void Bullet::Update(float DeltaTime)
 	if (tPosition.x > this->m_Level->GetWorldSize().x || tPosition.x < 0.0f
 		|| tPosition.y > this->m_Level->GetWorldSize().y || tPosition.y < 0.0f)
 	{
-		this->m_IsActive = false;
+		this->m_IsValid = false;
 	}
 
 	AsteroidsGameObject::Update(DeltaTime);
@@ -62,5 +62,5 @@ void Bullet::OnCollision(Collider2D* Collider)
 		return;
 	}
 
-	this->m_IsActive = false;
+	this->m_IsValid = false;
 }

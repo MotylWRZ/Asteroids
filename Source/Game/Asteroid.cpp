@@ -18,7 +18,7 @@ Asteroid::Asteroid(float Size, float DeformationScale, int VerticesNum)
 	,m_CanMultiply(false)
 	,m_ChunksNum(2)
 {
-	this->m_MeshPrimitiveType = sf::LineStrip;
+	this->m_MeshPrimitiveType = sf::LinesStrip;
 }
 
 Asteroid::~Asteroid()
@@ -29,7 +29,7 @@ void Asteroid::Initialise(LevelBase* Level)
 {
 	AsteroidsGameObject::Initialise(Level);
 
-	if (!this->IsActive())
+	if (!this->IsValid())
 	{
 		return;
 	}
@@ -119,7 +119,7 @@ void Asteroid::OnCollision(Collider2D* Collider)
 		}
 	}
 
-	this->m_IsActive = false;
+	this->DestroyWithExplosion(1.0f, 20.0f);
 }
 
 void Asteroid::SetSize(float Size, float DeformationScale, int VerticesNum)

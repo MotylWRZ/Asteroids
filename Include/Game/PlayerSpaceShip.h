@@ -42,6 +42,8 @@ private:
 
 	float m_BulletDirAngleOffset;
 	sf::Vector2f m_BulletPositionOffset;
+	float m_ExplosionDuration = 1.0f;
+	float m_ExplosionRate = 0.1f;
 
 	std::shared_ptr<sf::CircleShape> m_CircleShape;
 	EShipRotation m_ShipRotation;

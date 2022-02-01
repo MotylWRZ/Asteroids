@@ -3,6 +3,7 @@
 #include "Core/Physics/Collider2D.h"
 
 Collider2D::Collider2D()
+    :m_CollisionEnabled(true)
 {
 }
 

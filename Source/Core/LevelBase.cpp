@@ -30,7 +30,7 @@ void LevelBase::Update(float DeltaTime)
 	{
 		std::shared_ptr<GameObject> tGameObject = this->m_GameObjects[i];
 
-		if (!tGameObject || !tGameObject->IsActive())
+		if (!tGameObject || !tGameObject->IsValid())
 		{
 			this->m_ObjectsToClear.push_back(i);
 			continue;

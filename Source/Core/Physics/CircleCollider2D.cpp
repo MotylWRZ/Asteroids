@@ -14,7 +14,7 @@ CircleCollider2D::~CircleCollider2D()
 
 bool CircleCollider2D::CollidesWith(Collider2D* Collider)
 {
-	if (!Collider)
+	if (!Collider || !this->IsCollisionEnabled())
 	{
 		return false;
 	}
@@ -24,7 +24,7 @@ bool CircleCollider2D::CollidesWith(Collider2D* Collider)
 
 bool CircleCollider2D::CollidesWith(CircleCollider2D* CircleCollider)
 {
-	if (!CircleCollider)
+	if (!CircleCollider || !this->IsCollisionEnabled())
 	{
 		return false;
 	}

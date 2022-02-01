@@ -14,6 +14,8 @@ public:
 	virtual void Update(float DeltaTime);
 	virtual void Render(sf::RenderWindow& Window);
 
+	inline virtual void DestroyObject() { this->m_IsValid = false;}
+
 	inline virtual const sf::Vector2f& GetPosition() const { return this->m_Position; }
 
 	inline virtual void SetPosition(sf::Vector2f NewPosition) { this->m_Position = NewPosition; }
@@ -25,7 +27,7 @@ public:
 	inline virtual void SetShader(const std::string& VertShaderFilename, const std::string& GeomShaderFilename, const std::string& FragShaderFilename);
 
 	inline const sf::Shader& GetShader() { return *this->m_Shader.get(); }
-	inline bool IsActive() { return this->m_IsActive; }
+	inline bool IsValid() { return this->m_IsValid; }
 
 	inline void ResetShaders() { m_Shader.reset(); };
 
@@ -35,7 +37,7 @@ protected:
 	float m_Scale;
 	std::vector<sf::Vertex> m_ObjectMesh;
 	sf::PrimitiveType m_MeshPrimitiveType;
-	bool m_IsActive;
+	bool m_IsValid;
 	LevelBase* m_Level;
 	std::unique_ptr<sf::Shader> m_Shader;
 private:

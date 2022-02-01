@@ -17,7 +17,7 @@ PlayerSpaceShip::PlayerSpaceShip()
 	, m_BulletPositionOffset(sf::Vector2f(0.0f, -100.0f))
 	, m_Size(70.0f)
 {
-	this->m_MeshPrimitiveType = sf::LineStrip;
+	this->m_MeshPrimitiveType = sf::LinesStrip;
 }
 
 PlayerSpaceShip::~PlayerSpaceShip()
@@ -27,6 +27,11 @@ PlayerSpaceShip::~PlayerSpaceShip()
 void PlayerSpaceShip::Initialise(LevelBase* Level)
 {
 	AsteroidsGameObject::Initialise(Level);
+
+	if (!this->IsValid())
+	{
+		return;
+	}
 
 	// Define the position of the mesh points
 	this->m_ObjectMesh.push_back(sf::Vertex(sf::Vector2f(0.0f, -this->m_Size)));
@@ -40,7 +45,6 @@ void PlayerSpaceShip::Initialise(LevelBase* Level)
 	this->m_ObjectMesh[1].color = sf::Color::Green;
 	this->m_ObjectMesh[2].color = sf::Color::Blue;
 
-
 	// Check if geometry shaders are supported
 	if (!sf::Shader::isGeometryAvailable())
 	{
@@ -48,7 +52,6 @@ void PlayerSpaceShip::Initialise(LevelBase* Level)
 		return;
 	}
 
-	//this->SetShader("Assets/Shaders/BasicVertexShader.vert", "Assets/Shaders/CoordWrappingShader.geom", "Assets/Shaders/BasicFragmentShader.frag");
 	this->SetShader("Assets/Shaders/BasicVertexShader.vert", "Assets/Shaders/CoordWrappingShader.geom", "Assets/Shaders/BasicFragmentShader.frag");
 
 	this->SetColliderRadius(47.0f * this->m_Scale);
@@ -56,7 +59,7 @@ void PlayerSpaceShip::Initialise(LevelBase* Level)
 
 void PlayerSpaceShip::Update(float DeltaTime)
 {
-	if (!this->IsActive())
+	if (!this->IsValid())
 	{
 		return;
 	}
@@ -91,7 +94,7 @@ void PlayerSpaceShip::Render(sf::RenderWindow& RenderWindow)
 
 void PlayerSpaceShip::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
 {
-	if (!this->IsActive())
+	if (!this->IsValid())
 	{
 		return;
 	}
@@ -127,7 +130,7 @@ void PlayerSpaceShip::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
 
 void PlayerSpaceShip::Shoot()
 {
-	if (!this->IsActive() || !this->m_Level)
+	if (!this->IsValid() || !this->m_Level)
 	{
 		return;
 	}

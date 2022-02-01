@@ -10,7 +10,7 @@ GameObject::GameObject()
 	:m_Position(sf::Vector2f(100.0f, 100.0f))
 	,m_Angle(0.0f)
 	,m_MeshPrimitiveType(sf::PrimitiveType::LineStrip)
-	,m_IsActive(false)
+	,m_IsValid(false)
 	,m_Level(nullptr)
 	,m_Scale(1.0f)
 {
@@ -22,7 +22,7 @@ GameObject::~GameObject()
 
 void GameObject::Initialise(LevelBase* Level)
 {
-	if (this->IsActive())
+	if (this->IsValid())
 	{
 		std::cout << "Object already has been initialised. The object has been reinitialised." << std::endl;
 		this->m_ObjectMesh.clear();
@@ -39,12 +39,12 @@ void GameObject::Initialise(LevelBase* Level)
 	this->ApplyTranform();
 
 	this->m_Level = Level;
-	this->m_IsActive = true;
+	this->m_IsValid = true;
 }
 
 void GameObject::Update(float DeltaTime)
 {
-	if (!this->m_IsActive)
+	if (!this->m_IsValid)
 	{
 		return;
 	}
@@ -54,7 +54,7 @@ void GameObject::Update(float DeltaTime)
 
 void GameObject::Render(sf::RenderWindow& Window)
 {
-	if (!this->m_IsActive)
+	if (!this->m_IsValid)
 	{
 		return;
 	}
