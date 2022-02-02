@@ -46,8 +46,8 @@ void Asteroid::Initialise(LevelBase* Level)
 
 		// Offset vertex position by random vector
 		sf::Vector2f tRandomPosOffset;
-		tRandomPosOffset.x = MathHelpers::GenerateRandomFloatInRange(-10.0f, 10.0f);
-		tRandomPosOffset.y = MathHelpers::GenerateRandomFloatInRange(-10.0f, 10.0f);
+		tRandomPosOffset.x = MathHelpers::GenerateRandomFloatInRange(-this->m_DeformationScale, this->m_DeformationScale);
+		tRandomPosOffset.y = MathHelpers::GenerateRandomFloatInRange(-this->m_DeformationScale, this->m_DeformationScale);
 		tVertexPos += tRandomPosOffset;
 
 		this->m_ObjectMesh.push_back(sf::Vertex(tVertexPos));
@@ -105,9 +105,9 @@ void Asteroid::Render(sf::RenderWindow& RenderWindow)
 {
 	AsteroidsGameObject::Render(RenderWindow);
 
-	std::vector<sf::Vertex> tCircleCollision = GeometryGenerator::GenerateCircle(this->GetColliderCenter(), this->GetColliderRadius(), 20);
+	//std::vector<sf::Vertex> tCircleCollision = GeometryGenerator::GenerateCircle(this->GetColliderCenter(), this->GetColliderRadius(), 20);
 
-	RenderWindow.draw(&tCircleCollision[0], tCircleCollision.size(), sf::LineStrip);
+	//RenderWindow.draw(&tCircleCollision[0], tCircleCollision.size(), sf::LineStrip);
 
 }
 
@@ -120,19 +120,9 @@ void Asteroid::OnCollision(Collider2D* Collider)
 		return;
 	}
 
-	if (this->m_CanMultiply)
-	{
-		for (unsigned int i = 0; i < this->m_ChunksNum; i++)
-		{
-			std::shared_ptr<GameObject> tAsteroid = std::make_shared<Asteroid>();
-			tAsteroid->SetPosition(this->GetPosition());
-			tAsteroid->SetScale(0.5f);
 
-			this->m_Level->AddObject(tAsteroid);
-		}
-	}
 
-	this->DestroyWithExplosion(1.0f, 20.0f);
+	//this->DestroyWithExplosion(1.0f, 20.0f);
 }
 
 void Asteroid::SetSize(float Size, float DeformationScale, int VerticesNum)
@@ -151,4 +141,22 @@ void Asteroid::SetCanMultiply(bool CanMultiply, unsigned int ChunksNum)
 {
 	this->m_CanMultiply = CanMultiply;
 	this->m_ChunksNum = ChunksNum;
+}
+
+void Asteroid::DestroyWithExplosion(float Duration, float Rate)
+{
+	AsteroidsGameObject::DestroyWithExplosion(Duration, Rate);
+
+	// Multiply the Asteroid
+	if (this->m_CanMultiply)
+	{
+		for (unsigned int i = 0; i < this->m_ChunksNum; i++)
+		{
+			std::shared_ptr<GameObject> tAsteroid = std::make_shared<Asteroid>();
+			tAsteroid->SetPosition(this->GetPosition());
+			tAsteroid->SetScale(0.5f);
+
+			this->m_Level->AddObject(tAsteroid);
+		}
+	}
 }

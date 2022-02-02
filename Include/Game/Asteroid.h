@@ -17,6 +17,7 @@ public:
     virtual void OnCollision(Collider2D* Collider) override;
     void SetSize(float Radius, float DeformationScale = 10.0f, int VerticesNum = 20);
     void SetCanMultiply(bool CanMultiply, unsigned int ChunksNum = 2);
+    virtual void DestroyWithExplosion(float Duration, float Rate);
 
 private:
     float m_AsteroidShapeRadius;

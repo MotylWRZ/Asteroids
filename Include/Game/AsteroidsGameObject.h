@@ -16,7 +16,7 @@ public:
 
 	virtual void WrapObjectCoordinates();
 
-	void DestroyWithExplosion(float Duration, float Rate);
+	virtual void DestroyWithExplosion(float Duration, float Rate);
 
 protected:
 	float m_ExplosionRate;

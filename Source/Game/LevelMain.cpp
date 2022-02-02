@@ -28,11 +28,11 @@ void LevelMain::Initialise()
 	sf::Vector2f tAsteroidPos(0.0f, 0.0f);
 	for (unsigned i = 0; i < 10; i++)
 	{
-		std::shared_ptr<GameObject> tAsteroid = std::make_shared<Asteroid>(47.0f);
+		std::shared_ptr<GameObject> tAsteroid = std::make_shared<Asteroid>(47.0f, 3.0f);
 		this->AddObject(tAsteroid);
 		tAsteroid->SetPosition(tAsteroidPos);
 		tAsteroidPos.x += 200.0f;
-		dynamic_cast<Asteroid*>(tAsteroid.get())->SetCanMultiply(true, 4);
+		dynamic_cast<Asteroid*>(tAsteroid.get())->SetCanMultiply(true, 2);
 	}
 }
 
