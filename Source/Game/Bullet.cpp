@@ -65,4 +65,5 @@ void Bullet::OnCollision(Collider2D* Collider)
 	tAsteroid->DestroyWithExplosion(1.0f, 20.0f);
 
 	this->m_IsValid = false;
+	this->SetCollisionEnabled(false);
 }

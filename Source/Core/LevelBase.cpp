@@ -83,6 +83,11 @@ void LevelBase::UpdateObjectCollision(GameObject* Object)
 	auto tColliderPtr = this->m_Colliders.find(Object)->second.lock();
 	Collider2D* tCollider = tColliderPtr.get();
 
+	if (!Object->IsValid())
+	{
+		return;
+	}
+
 	if (tCollider)
 	{
 		for (auto& tOtherCollider : this->m_Colliders)

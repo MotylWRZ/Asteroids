@@ -1,6 +1,7 @@
 #include "Core/Math/MathHelpers.h"
 #include "Core/LevelBase.h"
 #include "Game/Bullet.h"
+#include "Game/Asteroid.h"
 
 #include <iostream>
 
@@ -157,6 +158,7 @@ void PlayerSpaceShip::Shoot()
 
 void PlayerSpaceShip::OnCollision(Collider2D* Collider)
 {
+
 }
 
 void PlayerSpaceShip::RotateShip(float DeltaTime)

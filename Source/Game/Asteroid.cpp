@@ -119,10 +119,6 @@ void Asteroid::OnCollision(Collider2D* Collider)
 	{
 		return;
 	}
-
-
-
-	//this->DestroyWithExplosion(1.0f, 20.0f);
 }
 
 void Asteroid::SetSize(float Size, float DeformationScale, int VerticesNum)
