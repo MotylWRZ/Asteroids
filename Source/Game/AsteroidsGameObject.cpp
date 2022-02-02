@@ -1,5 +1,6 @@
 #include "Core/LevelBase.h"
 #include "Core/Math/MathHelpers.h"
+#include "Core/GeometryGenerator.h"
 
 #include "Game/AsteroidsGameObject.h"
 
@@ -56,8 +57,45 @@ void AsteroidsGameObject::Update(float DeltaTime)
 	}
 
 	this->WrapObjectCoordinates();
+	this->WrapColliderCoordinates();
 
 	this->SetColliderCenter(this->GetPosition());
+}
+
+void AsteroidsGameObject::Render(sf::RenderWindow& RenderWindow)
+{
+	GameObject::Render(RenderWindow);
+
+	//// Original Circle Collision
+	//std::vector<sf::Vertex> tCircleCollision = GeometryGenerator::GenerateCircle(this->GetColliderCenter(), this->GetColliderRadius(), 20);
+
+	//RenderWindow.draw(&tCircleCollision[0], tCircleCollision.size(), sf::LineStrip);
+
+	//// Extended Circle Collision
+	//std::vector<sf::Vertex> tCircleCollisionExtend = GeometryGenerator::GenerateCircle(this->m_ExtendColliderPosition, this->GetColliderRadius(), 20);
+
+	//for (auto& tVertex : tCircleCollisionExtend)
+	//{
+	//	tVertex.color = sf::Color::Red;
+	//}
+
+	//RenderWindow.draw(&tCircleCollisionExtend[0], tCircleCollisionExtend.size(), sf::LineStrip);
+}
+
+bool AsteroidsGameObject::CollidesWith(CircleCollider2D* CircleCollider)
+{
+	if (!CircleCollider || !this->IsCollisionEnabled())
+	{
+		return false;
+	}
+
+	if (this->CircleCircleCollision(this->GetColliderCenter(), this->GetColliderRadius(), CircleCollider->GetColliderCenter(), CircleCollider->GetColliderRadius())
+		|| this->CircleCircleCollision(this->m_ExtendColliderPosition, this->GetColliderRadius(), CircleCollider->GetColliderCenter(), CircleCollider->GetColliderRadius()))
+	{
+		return true;
+	}
+
+	return false;
 }
 
 void AsteroidsGameObject::WrapObjectCoordinates()
@@ -86,6 +124,41 @@ void AsteroidsGameObject::WrapObjectCoordinates()
 	}
 
 	this->SetPosition(tObjectPos);
+}
+
+void AsteroidsGameObject::WrapColliderCoordinates()
+{
+	sf::Vector2f tColliderPos = this->GetPosition();
+	sf::Vector2f tWorldSize = static_cast<sf::Vector2f>(this->m_Level->GetWorldSize());
+	const float tColliderRadius = this->GetColliderRadius();
+	float tOffsetX = 0.0f;
+	float tOffsetY = 0.0f;
+
+	// Wrap the X coordinate
+	if (tColliderPos.x < 0.0f + tColliderRadius)
+	{
+		tOffsetX = tColliderPos.x + tWorldSize.x;
+		tColliderPos.x = tOffsetX;
+	}
+	else if (tColliderPos.x > tWorldSize.x - tColliderRadius)
+	{
+		tOffsetX = tColliderPos.x - tWorldSize.x;
+		tColliderPos.x = tOffsetX;
+	}
+
+	// Wrap the Y coordinate
+	if (tColliderPos.y < 0.0f + tColliderRadius)
+	{
+		tOffsetY = tColliderPos.y + tWorldSize.y;
+		tColliderPos.y = tOffsetY;
+	}
+	else if (tColliderPos.y > tWorldSize.y - tColliderRadius)
+	{
+		tOffsetY = tColliderPos.y - tWorldSize.y;
+		tColliderPos.y = tOffsetY;
+	}
+
+	this->m_ExtendColliderPosition = tColliderPos;
 }
 
 void AsteroidsGameObject::DestroyWithExplosion(float Duration, float Rate)
