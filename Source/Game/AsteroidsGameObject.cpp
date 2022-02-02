@@ -8,6 +8,7 @@ AsteroidsGameObject::AsteroidsGameObject()
 	:m_CanExplode(false)
 	,m_ExplosionDuration(0.0f)
 	,m_ExplosionRate(0.0f)
+	,m_ExtendColliderPosition(sf::Vector2f(0.0f, 0.0f))
 {
 }
 
