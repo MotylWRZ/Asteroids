@@ -41,20 +41,15 @@ void LevelMain::Update(float DeltaTime)
 	unsigned int tLives = this->m_PlayerSpaceShip.lock().get()->GetLives();
 	LevelBase::Update(DeltaTime);
 
-	//if (this->m_PlayerSpaceShip.expired() || !this->m_PlayerSpaceShip.lock().get()->IsValid())
-	{
 		if (this->m_PlayerSpaceShip.lock().get()->GetLives() < tLives)
 		{
-			this->m_GameObjects.clear();
-			this->m_Colliders.clear();
-			this->m_ObjectsToAdd.clear();
-			this->m_ObjectsToClear.clear();
-			this->Initialise();
 			std::cout << "Player destroyed" << std::endl;
 		}
 
-	}
-
+		if (this->m_PlayerSpaceShip.expired() || !this->m_PlayerSpaceShip.lock().get()->IsValid())
+		{
+			this->Reinitialise();
+		}
 }
 
 void LevelMain::HandleInput(sf::Keyboard::Key Key, bool IsPressed)

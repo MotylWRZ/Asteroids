@@ -24,6 +24,16 @@ void LevelBase::Initialise()
 {
 }
 
+void LevelBase::Reinitialise()
+{
+	this->m_GameObjects.clear();
+	this->m_ObjectsToAdd.clear();
+	this->m_ObjectsToClear.clear();
+	this->m_Colliders.clear();
+
+	this->Initialise();
+}
+
 void LevelBase::Update(float DeltaTime)
 {
 	for (unsigned int i = 0; i < this->m_GameObjects.size(); i++)

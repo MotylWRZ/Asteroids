@@ -17,6 +17,7 @@ public:
 	virtual ~LevelBase();
 
 	virtual void Initialise();
+	virtual void Reinitialise();
 	virtual void Update(float DeltaTime);
 	virtual void HandleEvent(const sf::Event& Event);
 	virtual void HandleInput(sf::Keyboard::Key Key, bool IsPressed);
