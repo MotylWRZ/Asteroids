@@ -17,6 +17,7 @@ PlayerSpaceShip::PlayerSpaceShip()
 	, m_BulletDirAngleOffset(-90.0f * PI / 180.0f)
 	, m_BulletPositionOffset(sf::Vector2f(0.0f, -100.0f))
 	, m_Size(47.0f)
+	, m_Lives(3)
 {
 	this->m_MeshPrimitiveType = sf::LinesStrip;
 }
@@ -158,7 +159,15 @@ void PlayerSpaceShip::Shoot()
 
 void PlayerSpaceShip::OnCollision(Collider2D* Collider)
 {
+	Asteroid* tAsteroid = dynamic_cast<Asteroid*>(Collider);
 
+	if (!tAsteroid)
+	{
+		return;
+	}
+
+	this->m_Lives--;
+	this->DestroyWithExplosion(2.0f, 10.0f);
 }
 
 void PlayerSpaceShip::RotateShip(float DeltaTime)

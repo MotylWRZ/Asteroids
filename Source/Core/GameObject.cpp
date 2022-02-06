@@ -54,7 +54,7 @@ void GameObject::Update(float DeltaTime)
 
 void GameObject::Render(sf::RenderWindow& Window)
 {
-	if (!this->m_IsValid)
+	if (!this->m_IsValid || this->m_TransformedMesh.size() == 0)
 	{
 		return;
 	}

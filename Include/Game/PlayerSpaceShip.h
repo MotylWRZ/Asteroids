@@ -28,6 +28,9 @@ public:
 
 	virtual void OnCollision(Collider2D* Collider);
 
+	inline void SetLives(unsigned int Lives) { this->m_Lives = Lives; }
+	inline unsigned int GetLives() { return this->m_Lives; }
+
 private:
 	void RotateShip(float DeltaTime);
 	void DrawDebug(sf::RenderWindow& RenderWindow);
@@ -48,4 +51,6 @@ private:
 	std::shared_ptr<sf::CircleShape> m_CircleShape;
 	EShipRotation m_ShipRotation;
 	float m_Size;
+
+	unsigned int m_Lives;
 };
