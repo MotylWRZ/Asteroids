@@ -7,6 +7,7 @@
 #include "Core/LevelBase.h"
 
 class PlayerSpaceShip;
+class Asteroid;
 
 enum class EGameState
 {
@@ -27,6 +28,9 @@ public:
     virtual void HandleInput(sf::Keyboard::Key Key, bool IsPressed) override;
     virtual void Render(sf::RenderWindow& RenderWindow) override;
 
+    void SpawnAsteroids();
+
+
 private:
     std::weak_ptr<PlayerSpaceShip> m_PlayerSpaceShip;
     unsigned int m_MaxPlayerLives;
@@ -37,5 +41,7 @@ private:
     std::vector<sf::Vertex> m_UIShipIconMesh;
     sf::Font m_TextFont;
 
+    unsigned int m_AsteroidsNumMax;
+    std::vector<std::weak_ptr<Asteroid>> m_ActiveAsteroids;
 };
 

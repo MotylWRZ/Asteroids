@@ -72,6 +72,7 @@ void GameObject::ApplyTranform()
 {
 	this->m_TransformedMesh = this->m_ObjectMesh;
 
+
 	//Rotate
 	for (unsigned int i = 0; i < this->m_TransformedMesh.size(); i++)
 	{
@@ -80,7 +81,6 @@ void GameObject::ApplyTranform()
 	}
 
 	// Scale
-
 	for (unsigned int i = 0; i < this->m_TransformedMesh.size(); i++)
 	{
 		this->m_TransformedMesh[i].position.x *= this->m_Scale;

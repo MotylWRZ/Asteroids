@@ -10,6 +10,7 @@ LevelMain::LevelMain(sf::Vector2u WorldSize)
 	, m_MaxPlayerLives(3)
 	, m_PlayerLives(-1)
 	, m_GameState(EGameState::Menu)
+	, m_AsteroidsNumMax(12)
 {
 	this->m_TextFont.loadFromFile("Assets/Fonts/SpaceMono-Regular.ttf");
 }
@@ -56,15 +57,7 @@ void LevelMain::Initialise()
 		tPlayerShip->SetPosition(sf::Vector2f(this->m_WorldSize.x / 2, this->m_WorldSize.y / 2));
 
 		//Create and Initialise Asteroids
-		sf::Vector2f tAsteroidPos(0.0f, 0.0f);
-		for (unsigned i = 0; i < 12; i++)
-		{
-			std::shared_ptr<GameObject> tAsteroid = std::make_shared<Asteroid>(47.0f, 3.0f);
-			this->AddObject(tAsteroid);
-			tAsteroid->SetPosition(tAsteroidPos);
-			tAsteroidPos.x += 200.0f;
-			dynamic_cast<Asteroid*>(tAsteroid.get())->SetCanMultiply(true, 2);
-		}
+		this->SpawnAsteroids();
 
 		break;
 	}
@@ -108,6 +101,8 @@ void LevelMain::Update(float DeltaTime)
 
 		return;
 	}
+
+	this->SpawnAsteroids();
 }
 
 void LevelMain::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
@@ -153,7 +148,13 @@ void LevelMain::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
 		break;
 	}
 
-
+	for (unsigned int i = this->m_ActiveAsteroids.size(); i-- > 0;)
+	{
+		if (this->m_ActiveAsteroids[i].expired())
+		{
+	 		this->m_ActiveAsteroids.erase(this->m_ActiveAsteroids.begin() + i);
+		}
+	}
 }
 
 void LevelMain::Render(sf::RenderWindow& RenderWindow)
@@ -163,5 +164,21 @@ void LevelMain::Render(sf::RenderWindow& RenderWindow)
 	for (sf::Text& tText : this->m_UITextElements)
 	{
 		RenderWindow.draw(tText);
+	}
+}
+
+void LevelMain::SpawnAsteroids()
+{
+	sf::Vector2f tAsteroidPos(0.0f, 0.0f);
+	for (this->m_ActiveAsteroids.size(); this->m_ActiveAsteroids.size() < this->m_AsteroidsNumMax;)
+	{
+		std::shared_ptr<GameObject> tAsteroid = std::make_shared<Asteroid>(47.0f, 3.0f);
+		this->AddObject(tAsteroid);
+		tAsteroid->SetPosition(tAsteroidPos);
+		tAsteroidPos.x += 200.0f;
+		std::weak_ptr<Asteroid> tAsteroidWeakPtr = std::dynamic_pointer_cast<Asteroid>(tAsteroid);
+		tAsteroidWeakPtr.lock().get()->SetCanMultiply(true, 2);
+
+		this->m_ActiveAsteroids.push_back(std::weak_ptr<Asteroid>(tAsteroidWeakPtr));
 	}
 }
