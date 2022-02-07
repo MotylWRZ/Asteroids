@@ -8,6 +8,13 @@
 
 class PlayerSpaceShip;
 
+enum class EGameState
+{
+    Menu,
+    Game,
+    Endgame
+};
+
 class LevelMain :
     public LevelBase
 {
@@ -22,6 +29,11 @@ public:
 
 private:
     std::weak_ptr<PlayerSpaceShip> m_PlayerSpaceShip;
+    EGameState m_GameState;
+
+    std::vector<sf::Text> m_UITextElements;
+    std::vector<sf::Vertex> m_UIShipIconMesh;
+    sf::Font m_TextFont;
 
 };
 
