@@ -9,6 +9,7 @@ AsteroidsGameObject::AsteroidsGameObject()
 	,m_ExplosionDuration(0.0f)
 	,m_ExplosionRate(0.0f)
 	,m_ExtendColliderPosition(sf::Vector2f(0.0f, 0.0f))
+	,m_IsInputEnabled(false)
 {
 }
 
@@ -81,6 +82,14 @@ void AsteroidsGameObject::Render(sf::RenderWindow& RenderWindow)
 	//}
 
 	//RenderWindow.draw(&tCircleCollisionExtend[0], tCircleCollisionExtend.size(), sf::LineStrip);
+}
+
+void AsteroidsGameObject::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
+{
+	if (!this->m_IsInputEnabled)
+	{
+		return;
+	}
 }
 
 bool AsteroidsGameObject::CollidesWith(CircleCollider2D* CircleCollider)

@@ -7,6 +7,8 @@
 
 LevelMain::LevelMain(sf::Vector2u WorldSize)
 	:LevelBase(WorldSize)
+	, m_MaxPlayerLives(3)
+	, m_PlayerLives(-1)
 	, m_GameState(EGameState::Menu)
 {
 	this->m_TextFont.loadFromFile("Assets/Fonts/SpaceMono-Regular.ttf");
@@ -24,16 +26,33 @@ void LevelMain::Initialise()
 	{
 	case EGameState::Menu:
 	{
+		this->m_UITextElements.clear();
+
+		sf::Text tMenuText;
+		tMenuText.setFont(this->m_TextFont);
+		tMenuText.setString("Asteroids");
+		tMenuText.setPosition(this->m_WorldSize.x / 2, this->m_WorldSize.y / 2);
+		tMenuText.setOrigin(tMenuText.getLocalBounds().width / 2, tMenuText.getLocalBounds().height / 2);
+		this->m_UITextElements.push_back(tMenuText);
 
 		break;
 	}
 	case EGameState::Game:
 	{
+		this->m_UITextElements.clear();
 
 		// Create and Initialise PlayerSpaceShip
 		std::shared_ptr<GameObject> tPlayerShip = std::make_shared<PlayerSpaceShip>();
 		this->AddObject(tPlayerShip);
 		this->m_PlayerSpaceShip = std::static_pointer_cast<PlayerSpaceShip>(tPlayerShip);
+
+		// If PlayerLives is not default value (-1), this means that the player existed and has been already destroyed
+		// if it's -1, initialse a player object and set the current lives number to the max lives value
+		if (this->m_PlayerLives == -1)
+		{
+			this->m_PlayerLives = this->m_MaxPlayerLives;
+		}
+
 		tPlayerShip->SetPosition(sf::Vector2f(this->m_WorldSize.x / 2, this->m_WorldSize.y / 2));
 
 		//Create and Initialise Asteroids
@@ -51,7 +70,12 @@ void LevelMain::Initialise()
 	}
 	case EGameState::Endgame:
 	{
-
+		sf::Text tMenuText;
+		tMenuText.setFont(this->m_TextFont);
+		tMenuText.setString("Congratulations ! You destroyed: 0 Asteroids.");
+		tMenuText.setPosition(this->m_WorldSize.x / 2, this->m_WorldSize.y / 2);
+		tMenuText.setOrigin(tMenuText.getLocalBounds().width / 2, tMenuText.getLocalBounds().height / 2);
+		this->m_UITextElements.push_back(tMenuText);
 		break;
 	}
 	default:
@@ -62,37 +86,45 @@ void LevelMain::Initialise()
 
 void LevelMain::Update(float DeltaTime)
 {
-	if (this->m_PlayerSpaceShip.expired())
-	{
-		return;
-	}
-
-	unsigned int tLives = this->m_PlayerSpaceShip.lock().get()->GetLives();
 	LevelBase::Update(DeltaTime);
 
-		if (this->m_PlayerSpaceShip.lock().get()->GetLives() < tLives)
+	if (this->m_PlayerSpaceShip.expired() || !this->m_PlayerSpaceShip.lock().get()->IsValid())
+	{
+		if (this->m_PlayerLives == -1)
 		{
-			std::cout << "Player destroyed" << std::endl;
+			return;
 		}
 
-		if (this->m_PlayerSpaceShip.expired() || !this->m_PlayerSpaceShip.lock().get()->IsValid())
+		this->m_PlayerLives--;
+
+		std::cout << "Player destroyed" << std::endl;
+
+		if (this->m_PlayerLives <= 0)
 		{
-			this->Reinitialise();
+			this->m_GameState = EGameState::Endgame;
 		}
+
+		this->Reinitialise();
+
+		return;
+	}
 }
 
 void LevelMain::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
 {
  	if (this->m_PlayerSpaceShip.lock().get())
 	{
-		m_PlayerSpaceShip.lock()->HandleInput(Key, IsPressed);
+		if (this->m_PlayerLives >= 0)
+		{
+			m_PlayerSpaceShip.lock()->HandleInput(Key, IsPressed);
+		}
 	}
 
 	switch (this->m_GameState)
 	{
 	case EGameState::Menu:
 	{
-		if (Key == sf::Keyboard::Enter)
+		if (Key == sf::Keyboard::Enter && IsPressed)
 		{
 			this->m_GameState = EGameState::Game;
 
@@ -108,7 +140,7 @@ void LevelMain::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
 	}
 	case EGameState::Endgame:
 	{
-		if (Key == sf::Keyboard::Enter)
+		if (Key == sf::Keyboard::Enter && IsPressed)
 		{
 			this->m_GameState = EGameState::Menu;
 
@@ -127,4 +159,9 @@ void LevelMain::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
 void LevelMain::Render(sf::RenderWindow& RenderWindow)
 {
 	LevelBase::Render(RenderWindow);
+
+	for (sf::Text& tText : this->m_UITextElements)
+	{
+		RenderWindow.draw(tText);
+	}
 }

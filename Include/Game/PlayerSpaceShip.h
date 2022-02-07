@@ -22,14 +22,11 @@ public:
 	virtual void Initialise(LevelBase* Level) override;
 	virtual void Update(float DeltaTime) override;
 	virtual void Render(sf::RenderWindow& RenderWindow) override;
-	virtual void HandleInput(sf::Keyboard::Key Key, bool IsPressed);
+	virtual void HandleInput(sf::Keyboard::Key Key, bool IsPressed) override;
 
 	void Shoot();
 
 	virtual void OnCollision(Collider2D* Collider);
-
-	inline void SetLives(unsigned int Lives) { this->m_Lives = Lives; }
-	inline unsigned int GetLives() { return this->m_Lives; }
 
 private:
 	void RotateShip(float DeltaTime);
@@ -51,6 +48,4 @@ private:
 	std::shared_ptr<sf::CircleShape> m_CircleShape;
 	EShipRotation m_ShipRotation;
 	float m_Size;
-
-	unsigned int m_Lives;
 };

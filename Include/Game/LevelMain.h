@@ -29,6 +29,8 @@ public:
 
 private:
     std::weak_ptr<PlayerSpaceShip> m_PlayerSpaceShip;
+    unsigned int m_MaxPlayerLives;
+    int m_PlayerLives;
     EGameState m_GameState;
 
     std::vector<sf::Text> m_UITextElements;

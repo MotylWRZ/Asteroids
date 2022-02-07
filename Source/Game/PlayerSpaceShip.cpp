@@ -17,9 +17,9 @@ PlayerSpaceShip::PlayerSpaceShip()
 	, m_BulletDirAngleOffset(-90.0f * PI / 180.0f)
 	, m_BulletPositionOffset(sf::Vector2f(0.0f, -100.0f))
 	, m_Size(47.0f)
-	, m_Lives(3)
 {
 	this->m_MeshPrimitiveType = sf::LinesStrip;
+	this->m_IsInputEnabled = true;
 }
 
 PlayerSpaceShip::~PlayerSpaceShip()
@@ -91,7 +91,7 @@ void PlayerSpaceShip::Render(sf::RenderWindow& RenderWindow)
 
 void PlayerSpaceShip::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
 {
-	if (!this->IsValid())
+	if (!this->IsValid() || !this->IsInputEnabled())
 	{
 		return;
 	}
@@ -166,7 +166,10 @@ void PlayerSpaceShip::OnCollision(Collider2D* Collider)
 		return;
 	}
 
-	this->m_Lives--;
+	// Disable Input
+	this->m_IsInputEnabled = false;
+
+	// Start Explosion Animation
 	this->DestroyWithExplosion(2.0f, 10.0f);
 }
 
