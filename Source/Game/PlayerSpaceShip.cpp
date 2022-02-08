@@ -78,6 +78,34 @@ void PlayerSpaceShip::Update(float DeltaTime)
 	// Add velocity to the position
 	this->m_Position += this->m_Velocity * DeltaTime;
 
+	if (this->m_ThrustStrength > 0.0f)
+	{
+		// Emit thrust particles
+		this->Thrust();
+	}
+
+	for (int i = this->m_ThrustParticles.size(); i-- > 0; )
+	{
+		ThrustParticle& tThrustParticle = this->m_ThrustParticles[i];
+
+		float tDist = MathHelpers::GetVectorLength(tThrustParticle.Start - tThrustParticle.End);
+
+		if (tDist <= 1.0f)
+		{
+			this->m_ThrustParticles.erase(this->m_ThrustParticles.begin() + i);
+			continue;
+		}
+
+		tDist -= 0.1f;
+		sf::Vector2f tDir = tThrustParticle.Start - tThrustParticle.End;
+		tDir = MathHelpers::NormalizeVector(tDir);
+		tDir *= 0.5f;
+		tThrustParticle.Start += tDir;
+		tThrustParticle.Size -= 200.0f * DeltaTime;
+		tThrustParticle.End = tThrustParticle.Start + (-tThrustParticle.Direction * tThrustParticle.Size);
+	}
+
+
 	AsteroidsGameObject::Update(DeltaTime);
 }
 
@@ -87,6 +115,17 @@ void PlayerSpaceShip::Render(sf::RenderWindow& RenderWindow)
 
 	//RenderWindow.draw(*this->m_CircleShape, &this->GetShader());
 	this->DrawDebug(RenderWindow);
+
+	// Render Thrust Particles
+	for (auto& tThrustParticle : this->m_ThrustParticles)
+	{
+		sf::Vertex tStart = tThrustParticle.Start;
+		sf::Vertex tEnd = tThrustParticle.End;
+
+		std::vector<sf::Vertex> tLine = { tStart, tEnd };
+
+		RenderWindow.draw(&tLine[0], tLine.size(), sf::Lines);
+	}
 }
 
 void PlayerSpaceShip::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
@@ -101,7 +140,6 @@ void PlayerSpaceShip::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
 	case sf::Keyboard::Key::Up:
 	{
 		IsPressed ? this->m_ThrustStrength = this->m_LinearAcceleration : this->m_ThrustStrength = 0.0f;
-
 		break;
 	}
 	case sf::Keyboard::Key::Left:
@@ -155,6 +193,52 @@ void PlayerSpaceShip::Shoot()
 
 	// Set a new bullet direction
 	tBullet->SetDirection(tBulletDir);
+}
+
+void PlayerSpaceShip::Thrust()
+{
+	// Construct a thrust particle (line)
+	ThrustParticle tThrustParticle;
+
+	float tStartOffsetX = MathHelpers::GenerateRandomFloatInRange(-10.0f, 10.0f);
+	sf::Vector2f tThrustParticlePositionOffset = sf::Vector2f(tStartOffsetX, 24.0f);
+
+	// Transform particle position offset using current player ship rotation angle
+	sf::Vector2f tOffsetTransformed = tThrustParticlePositionOffset;
+
+	tOffsetTransformed.x = tThrustParticlePositionOffset.x * cosf(this->m_Angle) - tThrustParticlePositionOffset.y * sinf(this->m_Angle);
+		tOffsetTransformed.y = tThrustParticlePositionOffset.x * sinf(this->m_Angle) + tThrustParticlePositionOffset.y * cosf(this->m_Angle);
+
+	// Calculate the initial particle position by adding a transformed offset to the player ship position
+	//sf::Vector2f tBulletPosition = this->m_Position + tOffsetTransformed;
+	tThrustParticle.Start = this->m_Position + tOffsetTransformed;
+
+	// Create a vector to store a bullet direction
+	sf::Vector2f tParticleDir(0.0f, 0.0f);
+
+	//float tAngle = this->m_Angle + MathHelpers::GenerateRandomFloatInRange(-1.0f, 1.0f);
+	float tAngle;
+	if (tStartOffsetX >= 0.0f)
+	{
+		tAngle = this->m_Angle + MathHelpers::GenerateRandomFloatInRange(tStartOffsetX / 100.0f, tStartOffsetX / 10.0f);
+	}
+	else
+	{
+		tAngle = this->m_Angle + MathHelpers::GenerateRandomFloatInRange(tStartOffsetX / 10.0f, tStartOffsetX / 100.0f);
+	}
+
+	// Calculate particle direction
+	tParticleDir.x = cosf(tAngle + this->m_BulletDirAngleOffset);
+	tParticleDir.y = sinf(tAngle + this->m_BulletDirAngleOffset);
+
+	// Set a new bullet direction
+	tThrustParticle.Direction = -tParticleDir;
+	// Set particle size (length)
+	tThrustParticle.Size = MathHelpers::GenerateRandomFloatInRange(3.0f, 10.0f);
+	// Set particle end position
+	tThrustParticle.End = tThrustParticle.Start + (tThrustParticle.Direction * tThrustParticle.Size);
+
+	this->m_ThrustParticles.push_back(tThrustParticle);
 }
 
 void PlayerSpaceShip::OnCollision(Collider2D* Collider)

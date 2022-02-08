@@ -13,6 +13,14 @@ enum class EShipRotation
 	Rotate_None
 };
 
+struct ThrustParticle
+{
+	sf::Vector2f Start;
+	sf::Vector2f End;
+	sf::Vector2f Direction;
+	float Size;
+};
+
 class PlayerSpaceShip : public AsteroidsGameObject
 {
 public:
@@ -25,6 +33,7 @@ public:
 	virtual void HandleInput(sf::Keyboard::Key Key, bool IsPressed) override;
 
 	void Shoot();
+	void Thrust();
 
 	virtual void OnCollision(Collider2D* Collider);
 
@@ -48,4 +57,7 @@ private:
 	std::shared_ptr<sf::CircleShape> m_CircleShape;
 	EShipRotation m_ShipRotation;
 	float m_Size;
+
+	std::vector<ThrustParticle> m_ThrustParticles;
+
 };
