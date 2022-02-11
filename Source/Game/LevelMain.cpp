@@ -103,6 +103,8 @@ void LevelMain::Update(float DeltaTime)
 		return;
 	}
 
+	std::cout << this->m_PlayerScore << std::endl;
+
 	this->SpawnAsteroids();
 }
 

@@ -2,6 +2,7 @@
 #include "Core/GeometryGenerator.h"
 #include "Game/Bullet.h"
 #include "Core/LevelBase.h"
+#include "Game/LevelMain.h"
 
 #include <iostream>
 
@@ -142,6 +143,13 @@ void Asteroid::SetCanMultiply(bool CanMultiply, unsigned int ChunksNum)
 void Asteroid::DestroyWithExplosion(float Duration, float Rate)
 {
 	AsteroidsGameObject::DestroyWithExplosion(Duration, Rate);
+
+	LevelMain* tLevel = dynamic_cast<LevelMain*>(this->m_Level);
+
+	if (tLevel)
+	{
+		tLevel->SetPlayerScore(tLevel->GetPlayerScore() + 10);
+	}
 
 	// Multiply the Asteroid
 	if (this->m_CanMultiply)

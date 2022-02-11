@@ -30,6 +30,9 @@ public:
 
     void SpawnAsteroids();
 
+    inline void SetPlayerScore(unsigned int Score) { this->m_PlayerScore = Score; }
+    inline unsigned int GetPlayerScore() { return this->m_PlayerScore; }
+
 
 private:
     std::weak_ptr<PlayerSpaceShip> m_PlayerSpaceShip;
