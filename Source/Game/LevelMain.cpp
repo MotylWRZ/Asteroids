@@ -11,6 +11,7 @@ LevelMain::LevelMain(sf::Vector2u WorldSize)
 	, m_PlayerLives(-1)
 	, m_GameState(EGameState::Menu)
 	, m_AsteroidsNumMax(12)
+	, m_PlayerScore(0)
 {
 	this->m_TextFont.loadFromFile("Assets/Fonts/SpaceMono-Regular.ttf");
 }

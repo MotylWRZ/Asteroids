@@ -43,5 +43,6 @@ private:
 
     unsigned int m_AsteroidsNumMax;
     std::vector<std::weak_ptr<Asteroid>> m_ActiveAsteroids;
+    unsigned int m_PlayerScore;
 };
 
