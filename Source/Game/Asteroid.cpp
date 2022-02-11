@@ -18,7 +18,8 @@ Asteroid::Asteroid(float Size, float DeformationScale, int VerticesNum)
 	,m_DeformationScale(DeformationScale)
 	,m_CanMultiply(false)
 	,m_ChunksNum(2)
-	, m_AngularMovementDirection(1)
+	,m_AngularMovementDirection(1)
+	,m_ScoreValue(1)
 {
 	this->m_MeshPrimitiveType = sf::LinesStrip;
 }
@@ -148,7 +149,7 @@ void Asteroid::DestroyWithExplosion(float Duration, float Rate)
 
 	if (tLevel)
 	{
-		tLevel->SetPlayerScore(tLevel->GetPlayerScore() + 10);
+		tLevel->SetPlayerScore(tLevel->GetPlayerScore() + this->m_ScoreValue);
 	}
 
 	// Multiply the Asteroid

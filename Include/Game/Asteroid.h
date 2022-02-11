@@ -32,5 +32,6 @@ private:
     float m_AngularAcceleration;
     float m_MovementAngle;
     int m_AngularMovementDirection;
+    unsigned int m_ScoreValue;
 };
 
