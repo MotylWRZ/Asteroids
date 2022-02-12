@@ -2,6 +2,7 @@
 #include <memory>
 
 #include "Game/Asteroid.h"
+#include "Game/AsteroidsUI.h"
 
 #include "Game/LevelMain.h"
 
@@ -13,7 +14,7 @@ LevelMain::LevelMain(sf::Vector2u WorldSize)
 	, m_AsteroidsNumMax(12)
 	, m_PlayerScore(0)
 {
-	this->m_TextFont.loadFromFile("Assets/Fonts/SpaceMono-Regular.ttf");
+
 }
 
 LevelMain::~LevelMain()
@@ -26,23 +27,8 @@ void LevelMain::Initialise()
 
 	switch (this->m_GameState)
 	{
-	case EGameState::Menu:
-	{
-		this->m_UITextElements.clear();
-
-		sf::Text tMenuText;
-		tMenuText.setFont(this->m_TextFont);
-		tMenuText.setString("Asteroids");
-		tMenuText.setPosition(this->m_WorldSize.x / 2, this->m_WorldSize.y / 2);
-		tMenuText.setOrigin(tMenuText.getLocalBounds().width / 2, tMenuText.getLocalBounds().height / 2);
-		this->m_UITextElements.push_back(tMenuText);
-
-		break;
-	}
 	case EGameState::Game:
 	{
-		this->m_UITextElements.clear();
-
 		// Create and Initialise PlayerSpaceShip
 		std::shared_ptr<GameObject> tPlayerShip = std::make_shared<PlayerSpaceShip>();
 		this->AddObject(tPlayerShip);
@@ -59,23 +45,16 @@ void LevelMain::Initialise()
 
 		//Create and Initialise Asteroids
 		this->SpawnAsteroids();
-
-		break;
-	}
-	case EGameState::Endgame:
-	{
-		sf::Text tMenuText;
-		tMenuText.setFont(this->m_TextFont);
-		tMenuText.setString("Congratulations ! You destroyed: 0 Asteroids.");
-		tMenuText.setPosition(this->m_WorldSize.x / 2, this->m_WorldSize.y / 2);
-		tMenuText.setOrigin(tMenuText.getLocalBounds().width / 2, tMenuText.getLocalBounds().height / 2);
-		this->m_UITextElements.push_back(tMenuText);
 		break;
 	}
 	default:
 		break;
 	}
 
+	// Initialise AndroidsUI
+	this->m_AsteroidsUI = nullptr;
+	this->m_AsteroidsUI = std::make_shared<AsteroidsUI>();
+	this->m_AsteroidsUI->Initialise(*this);
 }
 
 void LevelMain::Update(float DeltaTime)
@@ -106,6 +85,9 @@ void LevelMain::Update(float DeltaTime)
 	std::cout << this->m_PlayerScore << std::endl;
 
 	this->SpawnAsteroids();
+
+	this->m_AsteroidsUI->Update(*this);
+
 }
 
 void LevelMain::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
@@ -164,10 +146,12 @@ void LevelMain::Render(sf::RenderWindow& RenderWindow)
 {
 	LevelBase::Render(RenderWindow);
 
-	for (sf::Text& tText : this->m_UITextElements)
-	{
-		RenderWindow.draw(tText);
-	}
+	this->m_AsteroidsUI->Render(RenderWindow);
+}
+
+void LevelMain::InitialiseGameUI()
+{
+
 }
 
 void LevelMain::SpawnAsteroids()

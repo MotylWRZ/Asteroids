@@ -73,15 +73,15 @@ void AsteroidsGameObject::Render(sf::RenderWindow& RenderWindow)
 
 	//RenderWindow.draw(&tCircleCollision[0], tCircleCollision.size(), sf::LineStrip);
 
-	//// Extended Circle Collision
-	//std::vector<sf::Vertex> tCircleCollisionExtend = GeometryGenerator::GenerateCircle(this->m_ExtendColliderPosition, this->GetColliderRadius(), 20);
+	// Extended Circle Collision
+	/*std::vector<sf::Vertex> tCircleCollisionExtend = GeometryGenerator::GenerateCircle(this->m_ExtendColliderPosition, this->GetColliderRadius(), 20);
 
-	//for (auto& tVertex : tCircleCollisionExtend)
-	//{
-	//	tVertex.color = sf::Color::Red;
-	//}
+	for (auto& tVertex : tCircleCollisionExtend)
+	{
+		tVertex.color = sf::Color::Red;
+	}
 
-	//RenderWindow.draw(&tCircleCollisionExtend[0], tCircleCollisionExtend.size(), sf::LineStrip);
+	RenderWindow.draw(&tCircleCollisionExtend[0], tCircleCollisionExtend.size(), sf::LineStrip);*/
 }
 
 void AsteroidsGameObject::HandleInput(sf::Keyboard::Key Key, bool IsPressed)

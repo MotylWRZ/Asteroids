@@ -29,6 +29,11 @@ public:
 	inline const sf::Shader& GetShader() { return *this->m_Shader.get(); }
 	inline bool IsValid() { return this->m_IsValid; }
 
+	inline void SetMesh(const std::vector<sf::Vertex>& Mesh) { this->m_ObjectMesh = Mesh; }
+	inline const std::vector<sf::Vertex>& GetMesh() const { return this->m_ObjectMesh; }
+
+	inline const std::vector<sf::Vertex>& GetMeshTransformed() const { return this->m_TransformedMesh; }
+
 	inline void ResetShaders() { m_Shader.reset(); };
 
 protected:
