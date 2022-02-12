@@ -3,8 +3,11 @@
 
 
 AsteroidsUI::AsteroidsUI()
+	:m_UIGameTextPosition(sf::Vector2f(51.0f, 10.0f))
+	,m_UIShipIconsSpacing(17.0f)
+	,m_UIShipIconsPosition(sf::Vector2f(36.0f, 47.0f))
 {
-	this->m_TextFont.loadFromFile("Assets/Fonts/SpaceMono-Regular.ttf");
+	this->m_TextFont.loadFromFile("Assets/Fonts/Roboto-Regular.ttf");
 }
 
 AsteroidsUI::~AsteroidsUI()
@@ -49,16 +52,14 @@ void AsteroidsUI::Initialise(LevelMain* Level)
 			return;
 		}
 
-		//this->m_UIShipIconMesh = SpaceShip->GetMesh();
-
+		// Setup  the mesh icons
 		std::vector<sf::Vertex> tSpaceShipMesh = tSpaceShip->GetMesh();
 
 		float tOffsetX = 17.0f;
-		sf::Vector2f tPosition(12.0f, 100.0f);
+		sf::Vector2f tPosition = this->m_UIShipIconsPosition;
 
 		for (size_t i = 0; i < Level->GetPlayerLives(); i++)
 		{
-			//this->m_UIShipIcons.push_back(tSpaceShipMesh);
 			std::shared_ptr<GameObject> tShipIcon = std::make_shared<GameObject>();
 			tShipIcon->SetMesh(tSpaceShipMesh);
 			tShipIcon->SetScale(0.3f);
@@ -66,14 +67,15 @@ void AsteroidsUI::Initialise(LevelMain* Level)
 			tShipIcon->Initialise(Level);
 			this->m_UIShipIcons.push_back(tShipIcon);
 
-			tPosition.x += tOffsetX;
+			tPosition.x += this->m_UIShipIconsSpacing;
 		}
 
 		sf::Text tScoreText;
 		tScoreText.setFont(this->m_TextFont);
-		tScoreText.setString("Score");
+		tScoreText.setString(std::to_string(Level->GetPlayerScore()));
 		tScoreText.setOrigin(tScoreText.getLocalBounds().width / 2, tScoreText.getLocalBounds().height / 2);
-		tScoreText.setPosition(Level->GetWorldSize().x - tScoreText.getLocalBounds().width / 2, tScoreText.getLocalBounds().height / 2);
+		tScoreText.setPosition(tScoreText.getLocalBounds().width / 2, 0.0f);
+		tScoreText.setPosition(this->m_UIGameTextPosition);
 		this->m_UITextElements.push_back(tScoreText);
 
 		break;
@@ -106,6 +108,20 @@ void AsteroidsUI::Initialise(LevelMain* Level)
 
 void AsteroidsUI::Update(const LevelMain& Level)
 {
+	size_t tStringSizePrevious = this->m_UITextElements[0].getString().getSize();
+
+	this->m_UITextElements[0].setString(std::to_string(Level.GetPlayerScore()));
+
+	size_t tStringSize = this->m_UITextElements[0].getString().getSize();
+
+	// Apply offset
+	if (tStringSize > 1 && tStringSize > tStringSizePrevious)
+	{
+		sf::Vector2f tPosition = this->m_UITextElements[0].getPosition();
+		float tOffsetX = this->m_UITextElements[0].getLocalBounds().width / 2 / tStringSize;
+		tPosition.x -= tOffsetX;
+ 		this->m_UITextElements[0].setPosition(tPosition);
+	}
 }
 
 void AsteroidsUI::Render(sf::RenderWindow& RenderWindow)

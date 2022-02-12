@@ -19,10 +19,12 @@ public:
 	void Update(const LevelMain& Level);
 	void Render(sf::RenderWindow& RenderWindow);
 
+private:
 	std::vector<sf::Text> m_UITextElements;
-	//std::vector<std::vector<sf::Vertex>> m_UIShipIcons;
-	//std::vector<GameObject> m_ShipIcons;
 	std::vector<std::shared_ptr<GameObject>> m_UIShipIcons;
 	sf::Font m_TextFont;
+	sf::Vector2f m_UIGameTextPosition;
+	float m_UIShipIconsSpacing;
+	sf::Vector2f m_UIShipIconsPosition;
 
 };

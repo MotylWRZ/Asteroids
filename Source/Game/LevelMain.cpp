@@ -71,8 +71,6 @@ void LevelMain::Update(float DeltaTime)
 
 		this->m_PlayerLives--;
 
-		std::cout << "Player destroyed" << std::endl;
-
 		if (this->m_PlayerLives <= 0)
 		{
 			this->m_GameState = EGameState::Endgame;
@@ -82,8 +80,6 @@ void LevelMain::Update(float DeltaTime)
 
 		return;
 	}
-
-	std::cout << this->m_PlayerScore << std::endl;
 
 	this->SpawnAsteroids();
 
