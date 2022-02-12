@@ -16,6 +16,16 @@ GameObject::GameObject()
 {
 }
 
+GameObject::GameObject(const GameObject& Other)
+	:m_Position(Other.GetPosition())
+	,m_Angle(Other.GetAngle())
+	,m_MeshPrimitiveType(Other.GetPrimitiveType())
+	,m_IsValid(Other.IsValid())
+	,m_Level(Other.GetLevelPtr())
+	,m_Scale(Other.GetScale())
+{
+}
+
 GameObject::~GameObject()
 {
 }

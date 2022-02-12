@@ -55,7 +55,7 @@ void LevelMain::Initialise()
 	this->m_AsteroidsUI.reset();
 	this->m_AsteroidsUI = nullptr;
 	this->m_AsteroidsUI = std::make_shared<AsteroidsUI>();
-	this->m_AsteroidsUI->Initialise(*this);
+	this->m_AsteroidsUI->Initialise(this);
 }
 
 void LevelMain::Update(float DeltaTime)
