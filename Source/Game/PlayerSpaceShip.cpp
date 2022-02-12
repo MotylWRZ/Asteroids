@@ -51,7 +51,7 @@ void PlayerSpaceShip::Initialise(LevelBase* Level)
 
 	this->SetShader("Assets/Shaders/BasicVertexShader.vert", "Assets/Shaders/CoordWrappingShader.geom", "Assets/Shaders/BasicFragmentShader.frag");
 
-	this->SetColliderRadius(47.0f * this->m_Scale);
+	this->SetColliderRadius(27.0f * this->m_Scale);
 }
 
 void PlayerSpaceShip::Update(float DeltaTime)

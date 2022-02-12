@@ -52,6 +52,7 @@ void LevelMain::Initialise()
 	}
 
 	// Initialise AndroidsUI
+	this->m_AsteroidsUI.reset();
 	this->m_AsteroidsUI = nullptr;
 	this->m_AsteroidsUI = std::make_shared<AsteroidsUI>();
 	this->m_AsteroidsUI->Initialise(*this);
@@ -86,8 +87,8 @@ void LevelMain::Update(float DeltaTime)
 
 	this->SpawnAsteroids();
 
-	this->m_AsteroidsUI->Update(*this);
 
+	this->m_AsteroidsUI->Update(*this);
 }
 
 void LevelMain::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
@@ -115,6 +116,12 @@ void LevelMain::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
 	}
 	case EGameState::Game:
 	{
+		if (Key == sf::Keyboard::Escape && IsPressed)
+		{
+			this->m_GameState = EGameState::Endgame;
+
+			this->Reinitialise();
+		}
 
 		break;
 	}
