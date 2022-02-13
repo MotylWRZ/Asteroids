@@ -47,6 +47,10 @@ void LevelMain::Initialise()
 		this->SpawnAsteroids();
 		break;
 	}
+	case EGameState::Menu:
+	{
+		this->m_PlayerScore = 0;
+	}
 	default:
 		break;
 	}
