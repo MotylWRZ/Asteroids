@@ -11,7 +11,7 @@ LevelMain::LevelMain(sf::Vector2u WorldSize)
 	, m_MaxPlayerLives(3)
 	, m_PlayerLives(-1)
 	, m_GameState(EGameState::Menu)
-	, m_AsteroidsNumMax(12)
+	, m_AsteroidsNumMax(10)
 	, m_PlayerScore(0)
 {
 
