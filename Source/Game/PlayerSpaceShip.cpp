@@ -15,7 +15,7 @@ PlayerSpaceShip::PlayerSpaceShip()
 	, m_AngularAcceleration(3.0f)
 	, m_MaxSpeed(100.0f)
 	, m_BulletDirAngleOffset(-90.0f * PI / 180.0f)
-	, m_BulletPositionOffset(sf::Vector2f(0.0f, -100.0f))
+	, m_BulletPositionOffset(sf::Vector2f(0.0f, -47.0f))
 	, m_Size(47.0f)
 {
 	this->m_MeshPrimitiveType = sf::LinesStrip;
