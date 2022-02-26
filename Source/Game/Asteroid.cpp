@@ -19,7 +19,7 @@ Asteroid::Asteroid(float Size, float DeformationScale, int VerticesNum)
 	,m_CanMultiply(false)
 	,m_ChunksNum(2)
 	,m_AngularMovementDirection(1)
-	,m_ScoreValue(10)
+	,m_ScoreValue(1)
 {
 	this->m_MeshPrimitiveType = sf::LinesStrip;
 }
