@@ -45,7 +45,7 @@ void LevelMain::Initialise()
 
 		// Instantiate the AsteroidsSpawner object
 		this->m_AsteroidsSpawner = std::make_shared<AsteroidsSpawner>(this);
-		this->m_AsteroidsSpawner->Initialise(1, this->m_AsteroidsNumMax, 2.0f, 1000.0f, 170.0f, 77.0f);
+		this->m_AsteroidsSpawner->Initialise(1, this->m_AsteroidsNumMax, 2.0f, 1000.0f, 170.0f, 47.0f);
 
 		break;
 	}
