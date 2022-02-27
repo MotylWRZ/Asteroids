@@ -31,6 +31,9 @@ public:
 	inline const GameObject& GetObject(unsigned int Index) { return *this->m_GameObjects[Index]; }
 	inline std::vector<std::shared_ptr<GameObject>>& GetObjectsRef() { return this->m_GameObjects; }
 	inline const sf::Vector2u GetWorldSize() const { return this->m_WorldSize; }
+	inline void DestroyLevel() { this->m_IsValid = false; }
+	inline const bool IsLevelValid() const { return this->m_IsValid; }
+
 
 protected:
 	void ClearInactiveObjects();
@@ -43,5 +46,6 @@ protected:
 	std::map<const GameObject*, std::weak_ptr<Collider2D>> m_Colliders;
 
 	sf::Vector2u m_WorldSize;
+	bool m_IsValid;
 };
 

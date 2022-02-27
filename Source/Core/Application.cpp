@@ -57,10 +57,16 @@ void Application::Initialise()
 
 void Application::Update(float DeltaTime)
 {
-	if (this->m_GameLevel)
+	if (!this->m_GameLevel || !this->m_GameLevel->IsLevelValid())
 	{
-		this->m_GameLevel->Update(DeltaTime);
+		this->m_GameLevel.reset();
+		this->m_GameLevel = nullptr;
+		this->m_IsRunning = false;
+		return;
 	}
+
+	this->m_GameLevel->Update(DeltaTime);
+
 }
 
 void Application::HandleEvent(const sf::Event& Event)

@@ -8,6 +8,7 @@
 
 LevelBase::LevelBase()
 	:m_WorldSize(sf::Vector2u(0, 0))
+	,m_IsValid(true)
 {
 }
 

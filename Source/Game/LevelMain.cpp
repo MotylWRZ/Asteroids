@@ -15,7 +15,6 @@ LevelMain::LevelMain(sf::Vector2u WorldSize)
 	,m_AsteroidsNumMax(10)
 	,m_PlayerScore(0)
 {
-
 }
 
 LevelMain::~LevelMain()
@@ -108,6 +107,12 @@ void LevelMain::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
 	{
 	case EGameState::Menu:
 	{
+
+		if (Key == sf::Keyboard::Escape && IsPressed)
+		{
+			this->DestroyLevel();
+		}
+
 		if (Key == sf::Keyboard::Enter && IsPressed)
 		{
 			this->m_GameState = EGameState::Game;
