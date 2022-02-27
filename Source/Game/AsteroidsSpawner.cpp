@@ -16,8 +16,6 @@ AsteroidsSpawner::AsteroidsSpawner(LevelBase* Level)
 {
 }
 
-
-
 void AsteroidsSpawner::Initialise(unsigned int StartingAsteroidsNum, unsigned int MaxAsteroidsNum, float SpawningCooldown, float AsteroidsLinearAcceleration, float AsteroidsMaxSpeed, float AsteroidsSize)
 {
 	this->m_MaxAsteroidsNum = MaxAsteroidsNum;

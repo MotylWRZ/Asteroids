@@ -9,6 +9,7 @@ Application::Application(unsigned int WindowWidth, unsigned int WindowHeight)
 	,m_WindowHeight(WindowHeight)
 	,m_RenderWindow(nullptr)
 	,m_IsRunning(false)
+	,m_GameLevel(nullptr)
 {
 	this->m_RenderWindow = std::make_shared<sf::RenderWindow>(sf::VideoMode(this->m_WindowWidth, this->m_WindowHeight), "Asteroids");
 	this->m_WindowWidth = WindowWidth;
