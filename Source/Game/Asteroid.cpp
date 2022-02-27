@@ -107,11 +107,6 @@ void Asteroid::Update(float DeltaTime)
 void Asteroid::Render(sf::RenderWindow& RenderWindow)
 {
 	AsteroidsGameObject::Render(RenderWindow);
-
-	//std::vector<sf::Vertex> tCircleCollision = GeometryGenerator::GenerateCircle(this->GetColliderCenter(), this->GetColliderRadius(), 20);
-
-	//RenderWindow.draw(&tCircleCollision[0], tCircleCollision.size(), sf::LineStrip);
-
 }
 
 void Asteroid::OnCollision(Collider2D* Collider)
