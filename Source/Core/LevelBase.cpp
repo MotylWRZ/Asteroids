@@ -14,6 +14,7 @@ LevelBase::LevelBase()
 
 LevelBase::LevelBase(sf::Vector2u WorldSize)
 	:m_WorldSize(WorldSize)
+	, m_IsValid(true)
 {
 }
 
