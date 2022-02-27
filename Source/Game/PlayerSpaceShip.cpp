@@ -104,7 +104,7 @@ void PlayerSpaceShip::Update(float DeltaTime)
 		tDir = MathHelpers::NormalizeVector(tDir);
 		tDir *= 0.5f;
 		tThrustParticle.Start += tDir;
-		tThrustParticle.Size -= 200.0f * DeltaTime;
+		tThrustParticle.Size -= 400.0f * DeltaTime;
 		tThrustParticle.End = tThrustParticle.Start + (-tThrustParticle.Direction * tThrustParticle.Size);
 	}
 

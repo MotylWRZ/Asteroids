@@ -45,7 +45,7 @@ void LevelBase::Update(float DeltaTime)
 		if (!tGameObject || !tGameObject->IsValid())
 		{
 			this->m_ObjectsToClear.push_back(i);
-			continue;
+  			continue;
 		}
 
 		tGameObject->Update(DeltaTime);
