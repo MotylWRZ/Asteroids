@@ -9,6 +9,7 @@
 class PlayerSpaceShip;
 class Asteroid;
 class AsteroidsUI;
+class AsteroidsSpawner;
 
 enum class EGameState
 {
@@ -29,10 +30,6 @@ public:
     virtual void HandleInput(sf::Keyboard::Key Key, bool IsPressed) override;
     virtual void Render(sf::RenderWindow& RenderWindow) override;
 
-    void InitialiseGameUI();
-
-    void SpawnAsteroids();
-
     inline const PlayerSpaceShip* GetPlayerShip() const { return this->m_PlayerSpaceShip.expired() ? nullptr : this->m_PlayerSpaceShip.lock().get(); }
 
     inline void SetPlayerLives(unsigned int PlayerLives) { this->m_PlayerLives = PlayerLives; }
@@ -49,11 +46,9 @@ private:
     unsigned int m_MaxPlayerLives;
     int m_PlayerLives;
     EGameState m_GameState;
-
-    std::shared_ptr<AsteroidsUI> m_AsteroidsUI;
-
     unsigned int m_AsteroidsNumMax;
-    std::vector<std::weak_ptr<Asteroid>> m_ActiveAsteroids;
     unsigned int m_PlayerScore;
+    std::shared_ptr<AsteroidsUI> m_AsteroidsUI;
+    std::shared_ptr<AsteroidsSpawner> m_AsteroidsSpawner;
 };
 

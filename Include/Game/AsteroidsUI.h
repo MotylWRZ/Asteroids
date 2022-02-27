@@ -26,5 +26,5 @@ private:
 	sf::Vector2f m_UIGameTextPosition;
 	float m_UIShipIconsSpacing;
 	sf::Vector2f m_UIShipIconsPosition;
-
+	unsigned int m_TextCharSize;
 };

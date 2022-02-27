@@ -8,9 +8,9 @@
 
 Bullet::Bullet()
 	:m_MeshVertNum(20)
-	, m_BulletShapeRadius(3.0f)
-	, m_Speed(400.0f)
-	, m_Direction(sf::Vector2f(0.0f, 0.0f))
+	,m_BulletShapeRadius(3.0f)
+	,m_Speed(430.0f)
+	,m_Direction(sf::Vector2f(0.0f, 0.0f))
 {
 }
 

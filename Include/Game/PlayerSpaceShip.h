@@ -31,6 +31,7 @@ public:
 	virtual void Update(float DeltaTime) override;
 	virtual void Render(sf::RenderWindow& RenderWindow) override;
 	virtual void HandleInput(sf::Keyboard::Key Key, bool IsPressed) override;
+	virtual void DebugDraw(sf::RenderWindow& RenderWindow) override;
 
 	void Shoot();
 	void Thrust();
@@ -39,7 +40,7 @@ public:
 
 private:
 	void RotateShip(float DeltaTime);
-	void DrawDebug(sf::RenderWindow& RenderWindow);
+
 
 private:
 	sf::Vector2f m_Velocity;
@@ -59,5 +60,7 @@ private:
 	float m_Size;
 
 	std::vector<ThrustParticle> m_ThrustParticles;
-
+	float m_ThrustParticleSizeMin;
+	float m_ThrustParticleSizeMax;
+	unsigned int m_ThrustParticlesNumMax;
 };

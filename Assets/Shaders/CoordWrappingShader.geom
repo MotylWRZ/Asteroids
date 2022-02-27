@@ -6,10 +6,6 @@ layout (lines) in;
 // The output will consist of triangle strips with four vertices each
 layout (line_strip, max_vertices = 10) out;
 
-//uniform mat4 viewMatrix;
-//uniform mat4 projectionMatrix;
-//uniform mat4 modelMatrix;
-
 // Main entry point
 void main()
 {

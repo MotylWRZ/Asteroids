@@ -3,16 +3,17 @@
 
 #include "Game/Asteroid.h"
 #include "Game/AsteroidsUI.h"
+#include "Game/AsteroidsSpawner.h"
 
 #include "Game/LevelMain.h"
 
 LevelMain::LevelMain(sf::Vector2u WorldSize)
 	:LevelBase(WorldSize)
-	, m_MaxPlayerLives(3)
-	, m_PlayerLives(-1)
-	, m_GameState(EGameState::Menu)
-	, m_AsteroidsNumMax(10)
-	, m_PlayerScore(0)
+	,m_MaxPlayerLives(3)
+	,m_PlayerLives(-1)
+	,m_GameState(EGameState::Menu)
+	,m_AsteroidsNumMax(10)
+	,m_PlayerScore(0)
 {
 
 }
@@ -43,8 +44,10 @@ void LevelMain::Initialise()
 
 		tPlayerShip->SetPosition(sf::Vector2f(this->m_WorldSize.x / 2, this->m_WorldSize.y / 2));
 
-		//Create and Initialise Asteroids
-		this->SpawnAsteroids();
+		// Instantiate the AsteroidsSpawner object
+		this->m_AsteroidsSpawner = std::make_shared<AsteroidsSpawner>(this);
+		this->m_AsteroidsSpawner->Initialise(1, this->m_AsteroidsNumMax, 2.0f, 1000.0f, 170.0f, 77.0f);
+
 		break;
 	}
 	case EGameState::Menu:
@@ -60,6 +63,8 @@ void LevelMain::Initialise()
 	this->m_AsteroidsUI = nullptr;
 	this->m_AsteroidsUI = std::make_shared<AsteroidsUI>();
 	this->m_AsteroidsUI->Initialise(this);
+
+
 }
 
 void LevelMain::Update(float DeltaTime)
@@ -85,9 +90,7 @@ void LevelMain::Update(float DeltaTime)
 		return;
 	}
 
-	this->SpawnAsteroids();
-
-
+	this->m_AsteroidsSpawner->Update(DeltaTime);
 	this->m_AsteroidsUI->Update(*this);
 }
 
@@ -139,14 +142,6 @@ void LevelMain::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
 	default:
 		break;
 	}
-
-	for (unsigned int i = this->m_ActiveAsteroids.size(); i-- > 0;)
-	{
-		if (this->m_ActiveAsteroids[i].expired())
-		{
-	 		this->m_ActiveAsteroids.erase(this->m_ActiveAsteroids.begin() + i);
-		}
-	}
 }
 
 void LevelMain::Render(sf::RenderWindow& RenderWindow)
@@ -154,25 +149,4 @@ void LevelMain::Render(sf::RenderWindow& RenderWindow)
 	LevelBase::Render(RenderWindow);
 
 	this->m_AsteroidsUI->Render(RenderWindow);
-}
-
-void LevelMain::InitialiseGameUI()
-{
-
-}
-
-void LevelMain::SpawnAsteroids()
-{
-	sf::Vector2f tAsteroidPos(0.0f, 0.0f);
-	for (this->m_ActiveAsteroids.size(); this->m_ActiveAsteroids.size() < this->m_AsteroidsNumMax;)
-	{
-		std::shared_ptr<GameObject> tAsteroid = std::make_shared<Asteroid>(47.0f, 3.0f);
-		this->AddObject(tAsteroid);
-		tAsteroid->SetPosition(tAsteroidPos);
-		tAsteroidPos.x += 200.0f;
-		std::weak_ptr<Asteroid> tAsteroidWeakPtr = std::dynamic_pointer_cast<Asteroid>(tAsteroid);
-		tAsteroidWeakPtr.lock().get()->SetCanMultiply(true, 2);
-
-		this->m_ActiveAsteroids.push_back(std::weak_ptr<Asteroid>(tAsteroidWeakPtr));
-	}
 }

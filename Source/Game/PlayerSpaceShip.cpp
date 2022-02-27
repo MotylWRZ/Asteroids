@@ -9,14 +9,17 @@
 
 PlayerSpaceShip::PlayerSpaceShip()
 	:m_Velocity(sf::Vector2f(0.0f, 0.0f))
-	, m_ShipRotation(EShipRotation::Rotate_None)
-	, m_ThrustStrength(0.0f)
-	, m_LinearAcceleration(200.0f)
-	, m_AngularAcceleration(3.0f)
-	, m_MaxSpeed(100.0f)
-	, m_BulletDirAngleOffset(-90.0f * PI / 180.0f)
-	, m_BulletPositionOffset(sf::Vector2f(0.0f, -47.0f))
-	, m_Size(47.0f)
+	,m_ShipRotation(EShipRotation::Rotate_None)
+	,m_ThrustStrength(0.0f)
+	,m_ThrustParticleSizeMin(3.0f)
+	,m_ThrustParticleSizeMax(10.0f)
+	,m_ThrustParticlesNumMax(100)
+	,m_LinearAcceleration(170.0f)
+	,m_AngularAcceleration(3.0f)
+	,m_MaxSpeed(170.0f)
+	,m_BulletDirAngleOffset(-90.0f * PI / 180.0f)
+	,m_BulletPositionOffset(sf::Vector2f(0.0f, -47.0f))
+	,m_Size(47.0f)
 {
 	this->m_MeshPrimitiveType = sf::LinesStrip;
 	this->m_IsInputEnabled = true;
@@ -78,7 +81,7 @@ void PlayerSpaceShip::Update(float DeltaTime)
 	// Add velocity to the position
 	this->m_Position += this->m_Velocity * DeltaTime;
 
-	if (this->m_ThrustStrength > 0.0f)
+	if (this->m_ThrustStrength > 0.0f && !this->m_CanExplode)
 	{
 		// Emit thrust particles
 		this->Thrust();
@@ -90,7 +93,7 @@ void PlayerSpaceShip::Update(float DeltaTime)
 
 		float tDist = MathHelpers::GetVectorLength(tThrustParticle.Start - tThrustParticle.End);
 
-		if (tDist <= 1.0f)
+		if (tDist <= 1.0f || tDist > this->m_ThrustParticleSizeMax)
 		{
 			this->m_ThrustParticles.erase(this->m_ThrustParticles.begin() + i);
 			continue;
@@ -105,16 +108,12 @@ void PlayerSpaceShip::Update(float DeltaTime)
 		tThrustParticle.End = tThrustParticle.Start + (-tThrustParticle.Direction * tThrustParticle.Size);
 	}
 
-
 	AsteroidsGameObject::Update(DeltaTime);
 }
 
 void PlayerSpaceShip::Render(sf::RenderWindow& RenderWindow)
 {
 	AsteroidsGameObject::Render(RenderWindow);
-
-	//RenderWindow.draw(*this->m_CircleShape, &this->GetShader());
-	this->DrawDebug(RenderWindow);
 
 	// Render Thrust Particles
 	for (auto& tThrustParticle : this->m_ThrustParticles)
@@ -163,6 +162,49 @@ void PlayerSpaceShip::HandleInput(sf::Keyboard::Key Key, bool IsPressed)
 	}
 }
 
+void PlayerSpaceShip::DebugDraw(sf::RenderWindow& RenderWindow)
+{
+	AsteroidsGameObject::DebugDraw(RenderWindow);
+
+	// Calculate a Velocity vector length
+	float tVelocityLength = MathHelpers::GetVectorLength(this->m_Velocity);
+
+	// Cache locally a normalized velocity vector
+	sf::Vector2f tVelocityNormalized = MathHelpers::NormalizeVector(this->m_Velocity);
+
+	// Set the DebugLineStart to the current mesh position
+	sf::Vector2f tDebugLineStart = this->m_Position;
+
+	// Calculate the DebugLineEnd vector by adding to the current position noormalized velocity vector multiplied by velocity length
+	sf::Vector2f tDebugLineEnd = this->m_Position + (tVelocityNormalized * tVelocityLength);
+
+	// Construct a vector of vertices that will be used to draw a line
+	std::vector<sf::Vertex> tLinePoints;
+	tLinePoints.push_back(tDebugLineStart);
+	tLinePoints.push_back(tDebugLineEnd);
+
+	// Draw a line
+	RenderWindow.draw(&tLinePoints[0], tLinePoints.size(), sf::Lines);
+
+
+	std::vector<sf::Vertex> tCollisionGeometry;
+
+	// Generate a list of vertices placed around the object position
+	for (unsigned int i = 0; i < 20; i++)
+	{
+		float tAngle = (static_cast<float>(i) / static_cast<float>(20)) * PI * 2;
+		sf::Vector2f  tVertexPos(this->GetColliderRadius() * sinf(tAngle), this->GetColliderRadius() * cosf(tAngle));
+		tVertexPos += this->GetColliderCenter();
+
+		tCollisionGeometry.push_back(sf::Vertex(tVertexPos));
+	}
+
+	// Add the last vertex at the position of the first vertex added in order to connect the next to last vertex with the last one
+	tCollisionGeometry.push_back(sf::Vertex(tCollisionGeometry[0]));
+
+	RenderWindow.draw(&tCollisionGeometry[0], tCollisionGeometry.size(), sf::LinesStrip);
+}
+
 void PlayerSpaceShip::Shoot()
 {
 	if (!this->IsValid() || !this->m_Level)
@@ -197,6 +239,11 @@ void PlayerSpaceShip::Shoot()
 
 void PlayerSpaceShip::Thrust()
 {
+	if (this->m_ThrustParticles.size() >= this->m_ThrustParticlesNumMax)
+	{
+		return;
+	}
+
 	// Construct a thrust particle (line)
 	ThrustParticle tThrustParticle;
 
@@ -207,7 +254,7 @@ void PlayerSpaceShip::Thrust()
 	sf::Vector2f tOffsetTransformed = tThrustParticlePositionOffset;
 
 	tOffsetTransformed.x = tThrustParticlePositionOffset.x * cosf(this->m_Angle) - tThrustParticlePositionOffset.y * sinf(this->m_Angle);
-		tOffsetTransformed.y = tThrustParticlePositionOffset.x * sinf(this->m_Angle) + tThrustParticlePositionOffset.y * cosf(this->m_Angle);
+	tOffsetTransformed.y = tThrustParticlePositionOffset.x * sinf(this->m_Angle) + tThrustParticlePositionOffset.y * cosf(this->m_Angle);
 
 	// Calculate the initial particle position by adding a transformed offset to the player ship position
 	//sf::Vector2f tBulletPosition = this->m_Position + tOffsetTransformed;
@@ -231,10 +278,10 @@ void PlayerSpaceShip::Thrust()
 	tParticleDir.x = cosf(tAngle + this->m_BulletDirAngleOffset);
 	tParticleDir.y = sinf(tAngle + this->m_BulletDirAngleOffset);
 
-	// Set a new bullet direction
+	// Set a thrust particle direction
 	tThrustParticle.Direction = -tParticleDir;
 	// Set particle size (length)
-	tThrustParticle.Size = MathHelpers::GenerateRandomFloatInRange(3.0f, 10.0f);
+	tThrustParticle.Size = MathHelpers::GenerateRandomFloatInRange(this->m_ThrustParticleSizeMin, this->m_ThrustParticleSizeMax);
 	// Set particle end position
 	tThrustParticle.End = tThrustParticle.Start + (tThrustParticle.Direction * tThrustParticle.Size);
 
@@ -276,45 +323,4 @@ void PlayerSpaceShip::RotateShip(float DeltaTime)
 		break;
 	}
 	}
-}
-
-void PlayerSpaceShip::DrawDebug(sf::RenderWindow& RenderWindow)
-{
-	// Calculate a Velocity vector length
-	float tVelocityLength = MathHelpers::GetVectorLength(this->m_Velocity);
-
-	// Cache locally a normalized velocity vector
-	sf::Vector2f tVelocityNormalized = MathHelpers::NormalizeVector(this->m_Velocity);
-
-	// Set the DebugLineStart to the current mesh position
-	sf::Vector2f tDebugLineStart = this->m_Position;
-
-	// Calculate the DebugLineEnd vector by adding to the current position noormalized velocity vector multiplied by velocity length
-	sf::Vector2f tDebugLineEnd = this->m_Position + (tVelocityNormalized * tVelocityLength);
-
-	// Construct a vector of vertices that will be used to draw a line
-	std::vector<sf::Vertex> tLinePoints;
-	tLinePoints.push_back(tDebugLineStart);
-	tLinePoints.push_back(tDebugLineEnd);
-
-	// Draw a line
-	RenderWindow.draw(&tLinePoints[0], tLinePoints.size(), sf::Lines);
-
-
-	std::vector<sf::Vertex> tCollisionGeometry;
-
-	// Generate a list of vertices placed around the object position
-	for (unsigned int i = 0; i < 20; i++)
-	{
-		float tAngle = (static_cast<float>(i) / static_cast<float>(20)) * PI * 2;
-		sf::Vector2f  tVertexPos(this->GetColliderRadius() * sinf(tAngle), this->GetColliderRadius() * cosf(tAngle));
-		tVertexPos += this->GetColliderCenter();
-
-		tCollisionGeometry.push_back(sf::Vertex(tVertexPos));
-	}
-
-	// Add the last vertex at the position of the first vertex added in order to connect the next to last vertex with the last one
-	tCollisionGeometry.push_back(sf::Vertex(tCollisionGeometry[0]));
-
-	RenderWindow.draw(&tCollisionGeometry[0], tCollisionGeometry.size(), sf::LinesStrip);
 }

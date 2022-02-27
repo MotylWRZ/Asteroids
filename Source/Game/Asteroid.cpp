@@ -12,9 +12,9 @@ Asteroid::Asteroid(float Size, float DeformationScale, int VerticesNum)
 	:m_AsteroidShapeRadius(Size)
 	,m_MeshVertNum(VerticesNum)
 	,m_Velocity(sf::Vector2f(0.0f, 0.0f))
-	,m_LinearAcceleration(200.0f)
+	,m_LinearAcceleration(1000.0f)
 	,m_AngularAcceleration(1.0f)
-	,m_MaxSpeed(20.0f)
+	,m_MaxSpeed(100.0f)
 	,m_DeformationScale(DeformationScale)
 	,m_CanMultiply(false)
 	,m_ChunksNum(2)
@@ -160,6 +160,9 @@ void Asteroid::DestroyWithExplosion(float Duration, float Rate)
 			std::shared_ptr<GameObject> tAsteroid = std::make_shared<Asteroid>();
 			tAsteroid->SetPosition(this->GetPosition());
 			tAsteroid->SetScale(0.5f);
+			Asteroid* tAsteroidPtr = dynamic_cast<Asteroid*>(tAsteroid.get());
+			tAsteroidPtr->SetLinearAcceleration(this->m_LinearAcceleration);
+			tAsteroidPtr->SetMaxSpeed(this->m_MaxSpeed);
 
 			this->m_Level->AddObject(tAsteroid);
 		}
